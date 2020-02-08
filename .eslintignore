@@ -1,0 +1,4 @@
+gatsby-*.js
+public/
+node_modules/
+types/garphql-types.d.ts
