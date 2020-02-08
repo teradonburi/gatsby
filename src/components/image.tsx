@@ -1,7 +1,7 @@
-import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
-import Img, { FluidObject } from "gatsby-image"
-import { ImageQuery } from "../../types/graphql-types"
+import React from 'react'
+import { useStaticQuery, graphql } from 'gatsby'
+import Img, { FluidObject } from 'gatsby-image'
+import { ImageQuery } from '../../types/graphql-types'
 
 /*
  * This component is built using `gatsby-image` to automatically serve optimized
@@ -26,7 +26,7 @@ const imageQuery = graphql`
   }
 `
 
-const Image = () => {
+const Image: React.FC = () => {
   const data: ImageQuery = useStaticQuery(imageQuery)
 
   const fluid = data?.placeholderImage?.childImageSharp?.fluid
