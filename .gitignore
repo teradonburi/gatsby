@@ -4,3 +4,4 @@ node_modules
 .cache/
 public
 .DS_Store
+types/graphql-types.d.ts
