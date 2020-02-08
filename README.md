@@ -1,4 +1,4 @@
-# Gastby Template(with TypeScript & ESLint)
+# Gatsby Template(with TypeScript & ESLint)
 
 - TypeScript
 - ESLint
