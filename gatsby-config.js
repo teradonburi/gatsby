@@ -37,5 +37,17 @@ module.exports = {
         fileName: 'types/graphql-types.d.ts',
       },
     },
+    {
+      resolve: 'gatsby-plugin-eslint',
+      options: {
+        test: /\.(j|t)sx?$/,
+        exclude: /(node_modules|.cache|public)/,
+        stages: ['develop'],
+        options: {
+          emitWarning: true,
+          failOnError: false
+        }
+      }
+    }
   ],
 }
