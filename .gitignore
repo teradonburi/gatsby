@@ -1,0 +1,6 @@
+# Logs
+yarn-error.log
+node_modules
+.cache/
+public
+.DS_Store
