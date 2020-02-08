@@ -8,22 +8,23 @@
 import React from "react"
 import Helmet from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
+import { SiteMetaQuery } from "../../types/graphql-types"
+
+const siteMetaQuery = graphql`
+  query SiteMeta {
+    site {
+      siteMetadata {
+        title
+        description
+      }
+    }
+  }
+`
 
 function SEO({ description, lang, meta, title }) {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-          }
-        }
-      }
-    `
-  )
+  const data: SiteMetaQuery = useStaticQuery(siteMetaQuery)
 
-  const metaDescription = description || site.siteMetadata.description
+  const metaDescription = description || data.site.siteMetadata.description
 
   return (
     <Helmet
@@ -31,7 +32,7 @@ function SEO({ description, lang, meta, title }) {
         lang,
       }}
       title={title}
-      titleTemplate={`%s | ${site.siteMetadata.title}`}
+      titleTemplate={`%s | ${data.site.siteMetadata.title}`}
       meta={[
         {
           name: `description`,
