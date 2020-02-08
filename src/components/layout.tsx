@@ -22,12 +22,12 @@ const titleQuery = graphql`
   }
 `
 
-const Layout = ({ children }) => {
+const Layout: React.FC<{children: JSX.Element[] | JSX.Element}> = ({ children }) => {
   const data: SiteTitleQuery = useStaticQuery(titleQuery)
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <Header siteTitle={data?.site?.siteMetadata?.title} />
       <div
         style={{
           margin: `0 auto`,

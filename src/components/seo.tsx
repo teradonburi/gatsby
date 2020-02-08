@@ -21,56 +21,29 @@ const siteMetaQuery = graphql`
   }
 `
 
-function SEO({ description, lang, meta, title }) {
+const SEO: React.FC<{title?: string, description?: string}> = ({ title, description }) => {
   const data: SiteMetaQuery = useStaticQuery(siteMetaQuery)
 
-  const metaDescription = description || data.site.siteMetadata.description
+  const metaDescription = description || data?.site?.siteMetadata?.description
 
   return (
     <Helmet
-      htmlAttributes={{
-        lang,
-      }}
       title={title}
-      titleTemplate={`%s | ${data.site.siteMetadata.title}`}
-      meta={[
-        {
-          name: `description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:title`,
-          content: title,
-        },
-        {
-          property: `og:description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:type`,
-          content: `website`,
-        },
-        {
-          name: `twitter:card`,
-          content: `summary`,
-        },
-        {
-          name: `twitter:title`,
-          content: title,
-        },
-        {
-          name: `twitter:description`,
-          content: metaDescription,
-        },
-      ].concat(meta)}
-    />
+      titleTemplate={`%s | ${data?.site?.siteMetadata?.title}`}
+    >
+      <meta name='description' content={metaDescription!} />
+      <meta property='og:title' content={title} />
+      <meta property='og:description' content={metaDescription!} />
+      <meta property='og:type' content='website' />
+      <meta name='twitter:card' content='summary' />
+      <meta name='twitter:title' content={title} />
+      <meta name='twitter:description' content={metaDescription!} />
+    </Helmet>
   )
 }
 
 SEO.defaultProps = {
-  lang: `en`,
-  meta: [],
-  description: ``,
+  description: '',
 }
 
 export default SEO

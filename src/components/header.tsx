@@ -1,7 +1,8 @@
 import { Link } from "gatsby"
 import React from "react"
+import { Maybe } from "../../types/graphql-types"
 
-const Header: React.FC<{siteTitle: string}> = ({ siteTitle }) => (
+const Header: React.FC<{siteTitle?: Maybe<string>}> = ({ siteTitle }) => (
   <header
     style={{
       background: `rebeccapurple`,
