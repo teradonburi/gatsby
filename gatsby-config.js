@@ -48,6 +48,7 @@ module.exports = {
           failOnError: false
         }
       }
-    }
+    },
+    'gatsby-theme-material-ui',
   ],
 }
