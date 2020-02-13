@@ -1,8 +1,9 @@
 import { combineReducers, createStore as reduxCreateStore, Store, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import client from 'axios'
+import axios from 'axios'
 import user from '../reducers/user'
 
+const client = axios.create({baseURL: process.env.SERVER})
 const thunkWithClient = thunk.withExtraArgument(client)
 const reducer = combineReducers({
   user,

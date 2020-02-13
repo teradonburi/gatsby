@@ -6,7 +6,6 @@ const Header: React.FC<{siteTitle?: Maybe<string>}> = ({ siteTitle }) => (
   <header
     style={{
       background: 'rebeccapurple',
-      marginBottom: '1.45rem',
     }}
   >
     <div

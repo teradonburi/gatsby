@@ -6,7 +6,6 @@ import { Form, Field } from 'react-final-form'
 import { ValidationErrors, SubmissionErrors } from 'final-form'
 
 import {
-  Avatar,
   Card,
   CardContent,
   Button,
@@ -30,7 +29,6 @@ const connector = connect(
   // propsに受け取るreducerのstate
   ({user}: {user: redux.User}) => ({
     users: user?.users,
-    user: user?.user,
   }),
   // propsに付与するactions
   { load, create }
@@ -69,9 +67,13 @@ interface FormValues {
 type Props = ConnectedProps<typeof connector>
 
 const IndexPage: React.FC<Props> = (props) => {
-  const { users, user, load, create } = props
+  const { users, load, create } = props
   const [open, setOpen] = React.useState(false)
   const classes = useStyles({bgcolor: 'ff00ff'})
+
+  React.useEffect(() => {
+    load()
+  }, [])
 
   const validate = (values: FormValues): ValidationErrors => {
     const errors: FormValues = {}
@@ -111,7 +113,7 @@ const IndexPage: React.FC<Props> = (props) => {
             // ループで展開する要素には一意なkeyをつける（ReactJSの決まり事）
             <Card key={user.email} style={{ marginTop: '10px' }}>
               <CardContent className={classes.card}>
-                <Avatar src={user.picture?.thumbnail} />
+                <img src={user.picture?.thumbnail} />
                 <p className={classes.name}>
                   {'名前:' + user?.name?.last + ' ' + user?.name?.first}
                 </p>
@@ -157,7 +159,6 @@ const IndexPage: React.FC<Props> = (props) => {
             </Form>
           </DialogContent>
         </Dialog>
-        {user}
       <Link to="/page-2/">Go to page 2</Link>
     </Layout>
   )
