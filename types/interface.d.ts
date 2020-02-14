@@ -1,3 +1,4 @@
+import { Document } from 'mongoose'
 
 export namespace model {
   export interface User extends Document {

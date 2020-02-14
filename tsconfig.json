@@ -25,12 +25,12 @@
 
     /* Strict Type-Checking Options */
     "strict": true,                           /* Enable all strict type-checking options. */
-    "noImplicitAny": false,                 /* Raise error on expressions and declarations with an implied 'any' type. */
+    // "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
     // "strictNullChecks": true,              /* Enable strict null checks. */
     // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
     // "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
     // "strictPropertyInitialization": true,  /* Enable strict checking of property initialization in classes. */
-    "noImplicitThis": false,                /* Raise error on 'this' expressions with an implied 'any' type. */
+    // "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
     // "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
 
     /* Additional Checks */
@@ -44,7 +44,8 @@
     "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     "paths": {
       "interface": ["types/interface"],
-      "gatsby-theme-material-ui-top-layout": ["types/gatsby-theme-material-ui-top-layout"]
+      "mongoose-lean-virtuals": ["types/mongoose-lean-virtuals"],
+      "gatsby-theme-material-ui-top-layout/src/components/top-layout": ["types/gatsby-theme-material-ui-top-layout/src/components/top-layout"]
     }, /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
