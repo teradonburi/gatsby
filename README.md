@@ -12,7 +12,6 @@ Get starting from
 ```
 $ gatsby new yourProjectName https://github.com/teradonburi/gatsby.git
 $ cd gatsby
-$ yarn
 $ yarn develop
 ```
 
