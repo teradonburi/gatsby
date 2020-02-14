@@ -19,7 +19,7 @@ $ yarn develop
 change .env.production to prod server url
 
 ```
-SERVER=http://localhost:8000
+SERVER=http://localhost:8080
 ```
 
 release build client sources to public folder
