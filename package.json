@@ -7,6 +7,9 @@
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",
+    "@types/body-parser": "^1.19.0",
+    "@types/express": "^4.17.2",
+    "@types/mongoose": "^5.7.1",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/react-helmet": "^5.0.15",
@@ -54,7 +57,7 @@
     "develop:server": "nodemon api/server.ts",
     "build": "gatsby build",
     "start": "npm run develop",
-    "serve": "gatsby serve",
+    "serve": "ts-node api/server.ts",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   }
