@@ -1,7 +1,7 @@
 import {default as mongoose} from 'mongoose'
 const Schema = mongoose.Schema
 import mongooseLeanVirtuals from 'mongoose-lean-virtuals'
-import { model } from 'interface'
+import { model } from '../../types/interface'
 
 const schema = new Schema({
   gender: String,

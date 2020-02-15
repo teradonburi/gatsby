@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { model, route } from 'interface'
+import { model, route } from '../../types/interface'
 import { User } from '../models'
 
 async function index(req: Request, res: Response): Promise<Response | undefined> {
