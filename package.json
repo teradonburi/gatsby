@@ -52,11 +52,11 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "npm run develop",
     "develop": "run-p develop:*",
     "develop:client": "gatsby develop",
     "develop:server": "nodemon api/server.ts",
     "build": "gatsby build",
-    "start": "npm run develop",
     "serve": "ts-node api/server.ts",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
