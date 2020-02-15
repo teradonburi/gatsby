@@ -47,6 +47,10 @@ const useStyles = makeStyles(theme => ({
   card: {
     background: (props: {bgcolor: string}): string => `${props.bgcolor}`, // props経由でstyleを渡す
   },
+  img: {
+    width: 150,
+    height: 150,
+  },
   name: {
     margin: 10,
     color: theme.palette.primary.main,
@@ -113,7 +117,7 @@ const IndexPage: React.FC<Props> = (props) => {
             // ループで展開する要素には一意なkeyをつける（ReactJSの決まり事）
             <Card key={user.email} style={{ marginTop: '10px' }}>
               <CardContent className={classes.card}>
-                <img src={user.picture?.thumbnail} />
+                <img className={classes.img} src={user.picture?.thumbnail} />
                 <p className={classes.name}>
                   {'名前:' + user?.name?.last + ' ' + user?.name?.first}
                 </p>
