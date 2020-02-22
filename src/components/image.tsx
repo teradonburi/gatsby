@@ -3,6 +3,7 @@ import { StaticQuery, graphql } from 'gatsby'
 import Img, { FluidObject }  from 'gatsby-image'
 import { Maybe, GatsbyImageSharpFluidFragment } from '../../types/graphql-types'
 
+// useStaticQueryでないのでgatsby-plugin-graphql-codegenで生成してくれないから自前で型定義する
 type ImageQuery = {
   images: Maybe<{
     edges: Maybe<{
@@ -17,6 +18,7 @@ type ImageQuery = {
   }>;
 };
 
+// GraphQLのクエリ引数には何も指定しない！
 const imageQuery = graphql`
   query {
     images: allFile {
@@ -36,13 +38,12 @@ const imageQuery = graphql`
 `
 
 // 画像ファイルパスをプロパティに取るようなコンポーネントを定義
-export default ({ filename }: {filename: string}): JSX.Element => (
+const Image = ({ filename }: {filename: string}): JSX.Element => (
 
   // ページじゃないコンポーネントでもGraphQLが使えるように
   // StaticQueryタグを使う
   <StaticQuery
 
-    // GraphQLのクエリ引数には何も指定しない！
     query={imageQuery}
 
     // 全画像情報がdataに代入されている
@@ -66,3 +67,5 @@ export default ({ filename }: {filename: string}): JSX.Element => (
     }}
   />
 )
+
+export default Image
