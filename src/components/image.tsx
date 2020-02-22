@@ -1,36 +1,68 @@
 import React from 'react'
-import { useStaticQuery, graphql } from 'gatsby'
-import Img, { FluidObject } from 'gatsby-image'
-import { ImageQuery } from '../../types/graphql-types'
+import { StaticQuery, graphql } from 'gatsby'
+import Img, { FluidObject }  from 'gatsby-image'
+import { Maybe, GatsbyImageSharpFluidFragment } from '../../types/graphql-types'
 
-/*
- * This component is built using `gatsby-image` to automatically serve optimized
- * images with lazy loading and reduced file sizes. The image is loaded using a
- * `useStaticQuery`, which allows us to load the image from directly within this
- * component, rather than having to pass the image data down from pages.
- *
- * For more information, see the docs:
- * - `gatsby-image`: https://gatsby.dev/gatsby-image
- * - `useStaticQuery`: https://www.gatsbyjs.org/docs/use-static-query/
- */
+type ImageQuery = {
+  images: Maybe<{
+    edges: Maybe<{
+      node: Maybe<{
+        relativePath: string;
+        name: string;
+        childImageSharp: Maybe<{
+          fluid: Maybe<GatsbyImageSharpFluidFragment>;
+        }>;
+      }>;
+    }>[];
+  }>;
+};
 
 const imageQuery = graphql`
-  query Image {
-    placeholderImage: file(relativePath: { eq: "gatsby-astronaut.png" }) {
-      childImageSharp {
-        fluid(maxWidth: 300) {
-          ...GatsbyImageSharpFluid
+  query {
+    images: allFile {
+      edges {
+        node {
+          relativePath
+          name
+          childImageSharp {
+            fluid(maxWidth: 800) {
+              ...GatsbyImageSharpFluid
+            }
+          }
         }
       }
     }
   }
 `
 
-const Image: React.FC = () => {
-  const data: ImageQuery = useStaticQuery(imageQuery)
+// 画像ファイルパスをプロパティに取るようなコンポーネントを定義
+export default ({ filename }: {filename: string}): JSX.Element => (
 
-  const fluid = data?.placeholderImage?.childImageSharp?.fluid
-  return <Img fluid={fluid as FluidObject}/>
-}
+  // ページじゃないコンポーネントでもGraphQLが使えるように
+  // StaticQueryタグを使う
+  <StaticQuery
 
-export default Image
+    // GraphQLのクエリ引数には何も指定しない！
+    query={imageQuery}
+
+    // 全画像情報がdataに代入されている
+    render={(data: ImageQuery): JSX.Element | null => {
+
+      // 指定した画像ファイルパス（コンポーネントのプロパティ）と
+      // 一致するgatsby-image用の情報を取得
+      let image = null
+      if (data && data.images && data.images.edges) {
+        image = data.images.edges.find(n => {
+          if (!n || !n.node) return false
+          return n.node.relativePath.includes(filename)
+        })
+      }
+
+      if (!image || !image.node || !image.node.childImageSharp) return null
+
+      // Imgタグでgatsby-imageで最適化された画像を表示する
+      const fluid = image.node.childImageSharp.fluid
+      return <Img fluid={fluid as FluidObject} />
+    }}
+  />
+)

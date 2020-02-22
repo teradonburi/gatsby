@@ -10,7 +10,7 @@ const SecondPage: React.FC = () => (
     <SEO title="Page two" />
     <h1>Hi from the second page</h1>
     <p>Welcome to page 2</p>
-    <Image />
+    <Image filename='gatsby-astronaut.png' />
     <Link to="/">Go back to the homepage</Link>
   </Layout>
 )
