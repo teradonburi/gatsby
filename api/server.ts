@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import express from 'express'
 import bodyParser from 'body-parser'
 import {default as mongoose} from 'mongoose'
-mongoose.connect('mongodb://localhost/gatsby-template', { useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect('mongodb://localhost/gatsby-template', { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 
 const app = express()
 

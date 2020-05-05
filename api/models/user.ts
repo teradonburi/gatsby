@@ -1,6 +1,8 @@
 import {default as mongoose} from 'mongoose'
 const Schema = mongoose.Schema
 import mongooseLeanVirtuals from 'mongoose-lean-virtuals'
+import mongooseLeanDefaults from 'mongoose-lean-defaults'
+import mongooseLeanMethods from 'mongoose-lean-methods'
 import { model } from '../../types/interface'
 
 const schema = new Schema({
@@ -37,5 +39,7 @@ schema.virtual('thumbnail').get(function () {
 })
 
 schema.plugin(mongooseLeanVirtuals)
+schema.plugin(mongooseLeanDefaults)
+schema.plugin(mongooseLeanMethods)
 
 export default mongoose.model<model.User>('User', schema)
