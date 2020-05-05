@@ -1,0 +1,10 @@
+{
+  "root": "public/",
+  "headers": {
+    "/**": {
+      "Cache-Control": "public, max-age=0, must-revalidate"
+    }
+  },
+  "https_only": true,
+  "error_page": "404.html"
+}
