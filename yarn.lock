@@ -5654,6 +5654,12 @@ gatsby-plugin-eslint@^2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-eslint/-/gatsby-plugin-eslint-2.0.8.tgz#1ff7f546a427d274dc2de3932ba29822aae330c3"
 
+gatsby-plugin-google-tagmanager@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-google-tagmanager/-/gatsby-plugin-google-tagmanager-2.3.0.tgz#d7e1d8df0724fa94f500f41dbd7a977334b97d46"
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+
 gatsby-plugin-graphql-codegen@^2.2.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-graphql-codegen/-/gatsby-plugin-graphql-codegen-2.7.1.tgz#60683ef5508bc7e23c8e288f6d320b3f2b7f5d00"
