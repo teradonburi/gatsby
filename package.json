@@ -60,7 +60,7 @@
     "develop:client": "gatsby develop",
     "develop:server": "nodemon api/server.ts",
     "build": "gatsby build",
-    "serve": "ts-node api/server.ts",
+    "serve": "ts-node --max_old_space_size=2560 api/server.ts",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   }
