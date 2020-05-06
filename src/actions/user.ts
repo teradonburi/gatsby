@@ -59,7 +59,7 @@ export function logout() {
   }
 }
 
-export function show(id: string) {
+export function load(id: string) {
   return (dispatch: Store['dispatch'], getState: Store['getState'], client: AxiosInstance): Promise<void> => {
     return client
       .get(`/api/users/${id}`)

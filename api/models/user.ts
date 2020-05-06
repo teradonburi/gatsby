@@ -16,6 +16,7 @@ const schema = new Schema({
     type: String,
     required: true,
     unique: true,
+    select: false,
     validate: {
       validator: (v: string): boolean => validator.isEmail(v),
       message: (props: {value: string}): string => `${props.value}は正しいメールアドレスではありません。`,
@@ -42,15 +43,17 @@ const schema = new Schema({
   },
 },
 {
+  versionKey: false,
   timestamps: true,
   toObject: {
     virtuals: true,
   },
   toJSON: {
     virtuals: true,
-    transform: (doc, m): model.User => {
-      delete m.__v
-      return m
+    transform: (doc, user): model.User => {
+      delete user.__v
+      delete user.password
+      return user
     },
   },
 })

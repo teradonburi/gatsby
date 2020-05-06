@@ -3,13 +3,20 @@ import { RouteComponentProps } from '@reach/router'
 import { bindActionCreators } from 'redux'
 import { useSelector, useDispatch } from 'react-redux'
 import Button from '@material-ui/core/Button'
-import { logout } from '../../actions/user'
+import { load, logout } from '../../actions/user'
 import { redux } from 'interface'
 
 const UserPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)
   const dispatch = useDispatch()
+  const loadUser = bindActionCreators(load, dispatch)
   const logoutUser = bindActionCreators(logout, dispatch)
+
+  React.useEffect(() => {
+    if (user) {
+      loadUser(user._id)
+    }
+  }, [])
 
   const onClickLogout = (): void => {
     logoutUser()
@@ -17,7 +24,10 @@ const UserPage: React.FC<RouteComponentProps> = () => {
 
   return (
     <div>
-      {user && <div>ようこそ、{user.name}さん</div>}
+      <div>
+        <div>ようこそ、{user?.name}さん</div>
+        {user?.email && <div>メールアドレス: {user.email}</div>}
+      </div>
       <Button variant='contained' color='primary' onClick={onClickLogout}>ログアウト</Button>
     </div>
   )

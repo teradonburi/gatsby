@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import { User } from '../models'
 import { responseError } from '../libs/errorCode'
-import { createHash } from '../libs/hash'
-import { model } from '../../types/interface'
+import { model, AuthRequest } from '../../types/interface'
 
 export async function create(req: Request, res: Response): Promise<Response | undefined> {
   const gender = req.body.gender
@@ -37,7 +36,8 @@ export async function login(req: Request, res: Response): Promise<Response | und
     return responseError(res, 400)
   }
 
-  const user: model.User | null = await User.findOne({email, password: createHash(password)})
+  const user: model.User | null = await User.findOne({email, password})
+    .select('+token')
 
   if (!user) {
     return responseError(res, 404)
@@ -46,15 +46,16 @@ export async function login(req: Request, res: Response): Promise<Response | und
   return res.json(user)
 }
 
-export async function show(req: Request, res: Response): Promise<Response | undefined> {
-  const user = req.user as model.User | null
+export async function show(req: AuthRequest, res: Response): Promise<Response | undefined> {
   const id = req.params.id
-  if (!user) {
+  if (!req.user) {
     return responseError(res, 404)
   }
-  if (user._id.toString() === id) {
+  if (req.user._id.toString() !== id) {
     return responseError(res, 400)
   }
+
+  const user = await User.findById(id).select('name email')
 
   return res.json(user)
 }
