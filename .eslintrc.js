@@ -3,7 +3,8 @@ module.exports = {
   'env': {
     'browser': true, // ブラウザ
     "node": true,
-    'es6': true
+    'es6': true,
+    "jest": true
   },
   // 拡張
   "extends": [
@@ -25,6 +26,7 @@ module.exports = {
   'plugins': [
     'react',
     '@typescript-eslint',
+    'jest',
   ],
   'globals': {
   },

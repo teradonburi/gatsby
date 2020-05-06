@@ -3,4 +3,5 @@ public
 types/garphql-types.d.ts
 gatsby-config.js
 gatsby-node.js
+jest.config.js
 node_modules
