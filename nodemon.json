@@ -1,5 +1,5 @@
 {
   "verbose": true,
   "ignore": ["public", "src"],
-  "exec": "ts-node"
+  "exec": "node --inspect -r ts-node/register"
 }

@@ -1,35 +1,60 @@
 import { Request, Response } from 'express'
-import { model, route } from '../../types/interface'
 import { User } from '../models'
+import { responseError } from '../libs/errorCode'
+import { createHash } from '../libs/hash'
+import { model } from '../../types/interface'
 
-async function index(req: Request, res: Response): Promise<Response | undefined> {
-  const users: model.User[] = await User.find().lean({virtuals: true})
-  const results: route.User[] = users.map(u => ({
-    gender: u.gender,
-    name: {
-      first: u.first,
-      last: u.last,
-    },
-    email: u.email,
-    picture: {
-      thumbnail: u.thumbnail,
-    },
-  }))
-  return res.json(results)
+export async function create(req: Request, res: Response): Promise<Response | undefined> {
+  const gender = req.body.gender
+  const name = req.body.name
+  const email = req.body.email
+  const password = req.body.password
+
+  const exist = await User.exists({email})
+  if (exist) {
+    return responseError(res, 409)
+  }
+
+  try {
+    const user = await User.create({
+      gender,
+      name,
+      email,
+      password,
+    })
+    return res.json(user)
+  } catch (e) {
+    return responseError(res, 500, e)
+  }
+
 }
 
-async function create(req: Request, res: Response): Promise<Response | undefined> {
-  const user = req.body
-  const result = await User.create({
-    gender: user.gender,
-    first: user.name?.first,
-    last: user.name?.last,
-    email: user.email,
-  })
-  return res.json(result)
+export async function login(req: Request, res: Response): Promise<Response | undefined> {
+  const email = req.body.email
+  const password = req.body.password
+
+  if (!email || !password) {
+    return responseError(res, 400)
+  }
+
+  const user: model.User | null = await User.findOne({email, password: createHash(password)})
+
+  if (!user) {
+    return responseError(res, 404)
+  }
+
+  return res.json(user)
 }
 
-export default {
-  index,
-  create,
+export async function show(req: Request, res: Response): Promise<Response | undefined> {
+  const user = req.user as model.User | null
+  const id = req.params.id
+  if (!user) {
+    return responseError(res, 404)
+  }
+  if (user._id.toString() === id) {
+    return responseError(res, 400)
+  }
+
+  return res.json(user)
 }

@@ -38,14 +38,12 @@ const imageQuery = graphql`
 `
 
 // 画像ファイルパスをプロパティに取るようなコンポーネントを定義
-const Image = ({ filename }: {filename: string}): JSX.Element => (
+const Image = ({ filename, className, style }: {filename: string; className?: string; style?: React.CSSProperties}): JSX.Element => (
 
   // ページじゃないコンポーネントでもGraphQLが使えるように
   // StaticQueryタグを使う
   <StaticQuery
-
     query={imageQuery}
-
     // 全画像情報がdataに代入されている
     render={(data: ImageQuery): JSX.Element | null => {
 
@@ -63,7 +61,7 @@ const Image = ({ filename }: {filename: string}): JSX.Element => (
 
       // Imgタグでgatsby-imageで最適化された画像を表示する
       const fluid = image.node.childImageSharp.fluid
-      return <Img fluid={fluid as FluidObject} />
+      return <Img fluid={fluid as FluidObject} className={className} style={style} />
     }}
   />
 )
