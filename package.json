@@ -80,11 +80,12 @@
     "build": "gatsby build",
     "serve": "ts-node --max_old_space_size=2560 api/server.ts",
     "clean": "gatsby clean",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint --ext .ts,.tsx ."
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn test"
+      "pre-push": "yarn lint"
     }
   }
 }
