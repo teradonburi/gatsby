@@ -78,7 +78,7 @@
     "develop:client": "gatsby develop",
     "develop:server": "nodemon api/server.ts",
     "build": "gatsby build",
-    "serve": "ts-node --max_old_space_size=2560 api/server.ts",
+    "serve": "ts-node  api/server.ts",
     "clean": "gatsby clean",
     "test": "jest",
     "lint": "eslint --ext .ts,.tsx ."
