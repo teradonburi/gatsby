@@ -28,6 +28,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   'globals': {
+    workbox: true,
   },
   'rules': {
     // 改行コード
