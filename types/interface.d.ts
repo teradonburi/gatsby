@@ -12,9 +12,8 @@ export namespace model {
   }
 }
 
-export type AuthRequest<T = {}> = Omit<express.Request, 'body'> & {
+export type AuthRequest = Omit<express.Request, 'user'> & {
   user?: models.User.Model & MongoDocument;
-  body: T;
 }
 
 export namespace redux {

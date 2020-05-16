@@ -21,25 +21,29 @@ process.on('unhandledRejection', (err) => console.error(err))
 
 app.use(express.static(path.join(__dirname, '../public')))
 
-import bodyParser from 'body-parser'
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
-
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
+import { Strategy as AnonymousStrategy } from 'passport-anonymous'
 import { Strategy as BearerStrategy } from 'passport-http-bearer'
 const authenticate = passport.authenticate('bearer', {session: false})
+const partialAuth = passport.authenticate(['bearer', 'anonymous'], {session: false})
+
 import { secret } from './config'
 passport.use(new BearerStrategy(function(token, done) {
   // 認証APIの場合はここを通るよ
   jwt.verify(token, secret, async function(err) {
-    if (err) return done(null, false) // 不正なトークン
+    if (err) return done(err) // 不正なトークン
 
     const user = await User.findOne({token})
     if (!user) return done(null, false) // ユーザが見つからない
     return done(null, user) // 認証OK
   })
 }))
+passport.use(new AnonymousStrategy())
+
+import bodyParser from 'body-parser'
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
 
 import { users, webpush } from './routes'
 
@@ -59,6 +63,7 @@ app.use(
 
 app.use(
   '/api/webpush',
+  partialAuth,
   express.Router()
     .get('/key', wrap(webpush.getWebPushKey))
     .post('/subscription', wrap(webpush.createSubscription))

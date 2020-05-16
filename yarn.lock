@@ -1995,6 +1995,12 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
 
+"@types/passport-anonymous@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/passport-anonymous/-/passport-anonymous-1.0.3.tgz#87cb68d6b905288364120a1b978a01f7872195db"
+  dependencies:
+    "@types/passport" "*"
+
 "@types/passport-http-bearer@^1.0.35":
   version "1.0.35"
   resolved "https://registry.yarnpkg.com/@types/passport-http-bearer/-/passport-http-bearer-1.0.35.tgz#8f3dc9d460bb898db25a1d6bedee0fe3804483bf"
@@ -10659,6 +10665,12 @@ pascal-case@3.1.1, pascal-case@^3.1.1:
 pascalcase@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/pascalcase/-/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
+
+passport-anonymous@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/passport-anonymous/-/passport-anonymous-1.0.1.tgz#241e37274ec44dfb7f6cad234b41c438386bc117"
+  dependencies:
+    passport-strategy "1.x.x"
 
 passport-http-bearer@^1.0.1:
   version "1.0.1"
