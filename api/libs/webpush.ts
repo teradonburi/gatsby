@@ -1,12 +1,11 @@
 import webPush from 'web-push'
+import { vapidPublicKey, vapidSecretKey } from '../config'
 
 // 一度のみ払い出しすれば良いので本番は固定のものを使う
-const vapidKeys = process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY ?
-{
-  publicKey: process.env.VAPID_PUBLIC_KEY,
-  privateKey: process.env.VAPID_PRIVATE_KEY,
+const vapidKeys = {
+  publicKey: vapidPublicKey,
+  privateKey: vapidSecretKey,
 }
-: webPush.generateVAPIDKeys()
 
 webPush.setVapidDetails(
   'mailto:test@gmail.com', // 第一引数は'mailto:～'というフォーマットが必須

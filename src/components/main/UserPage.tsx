@@ -5,18 +5,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import { load, logout } from '../../actions/user'
 import { redux } from 'interface'
-import { sendSubscription } from '../../libs/webpush'
+import { sendSubscription } from '../../actions/webpush'
 
 const UserPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)
   const dispatch = useDispatch()
   const loadUser = bindActionCreators(load, dispatch)
   const logoutUser = bindActionCreators(logout, dispatch)
+  const webPushSubscription = bindActionCreators(sendSubscription, dispatch)
 
   React.useEffect(() => {
 
     if (user) {
-      sendSubscription()
+      webPushSubscription()
       loadUser(user._id)
     }
   }, [])

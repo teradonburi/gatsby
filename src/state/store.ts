@@ -3,8 +3,7 @@ import thunk from 'redux-thunk'
 import axios from 'axios'
 import { logout } from '../actions/user'
 import user from '../reducers/user'
-import { init as webpushInit } from '../libs/webpush'
-import { getUser } from '../auth/user'
+import { getUser } from '../storage/user'
 
 const client = axios.create({baseURL: process.env.SERVER})
 const thunkWithClient = thunk.withExtraArgument(client)
@@ -38,7 +37,5 @@ client.interceptors.response.use(res => res, err => {
   }
   return Promise.reject(err.response || {})
 })
-
-webpushInit(client)
 
 export default store

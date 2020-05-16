@@ -1,7 +1,7 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers'
 import { loadAction, createAction } from '../actions/user'
 import { model } from 'interface'
-import { getUser } from '../auth/user'
+import { getUser } from '../storage/user'
 
 const initialState: {user?: model.User | null} = {
   user: getUser(),

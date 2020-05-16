@@ -2,7 +2,7 @@ import actionCreatorFactory from 'typescript-fsa'
 import { AxiosInstance } from 'axios'
 import { Store } from 'redux'
 import { model } from 'interface'
-import { setUser, deleteUser } from '../auth/user'
+import { setUser, deleteUser } from '../storage/user'
 
 const actionCreator = actionCreatorFactory()
 
