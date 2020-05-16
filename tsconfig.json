@@ -1,5 +1,9 @@
 {
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./api/**/*"],
+  "exclude": ["node_modules", "build"],
+  "ts-node": {
+    "transpileOnly": true
+  },
   "compilerOptions": {
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
@@ -11,10 +15,10 @@
     "jsx": "react",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     // "declaration": true,                   /* Generates corresponding '.d.ts' file. */
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
-    // "sourceMap": true,                     /* Generates corresponding '.map' file. */
+    "sourceMap": true,                     /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    // "outDir": "./",                        /* Redirect output structure to the directory. */
-    // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+    "outDir": "./build",                        /* Redirect output structure to the directory. */
+    "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "composite": true,                     /* Enable project compilation */
     // "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
     // "removeComments": true,                /* Do not emit comments to output. */
@@ -43,10 +47,12 @@
     // "moduleResolution": "node",            /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
     "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     "paths": {
+      "public": ["api/public"],
       "interface": ["types/interface"],
       "mongoose-lean-virtuals": ["types/mongoose-lean-virtuals"],
       "mongoose-lean-defaults": ["types/mongoose-lean-defaults"],
       "mongoose-lean-methods": ["types/mongoose-lean-methods"],
+      "gatsby-plugin-express": ["types/gatsby-plugin-express"],
       "gatsby-theme-material-ui-top-layout/src/components/top-layout": ["types/gatsby-theme-material-ui-top-layout/src/components/top-layout"]
     }, /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     "skipLibCheck": true,                     /* Skip type checking of all declaration files (*.d.ts). */

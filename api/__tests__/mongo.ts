@@ -20,10 +20,10 @@ const mongoUri = process.env.mongoUri
 mongoose.connection.on('error', (e) => {
   if (e.message.code === 'ETIMEDOUT') {
     console.log(e)
-    mongoose.connect(mongoUri, mongooseOpts)
+    mongoose.connect(mongoUri as string, mongooseOpts)
   }
   console.log(e)
 })
 
-mongoose.connect(mongoUri, mongooseOpts)
+mongoose.connect(mongoUri as string, mongooseOpts)
 export const mongo = mongoose
