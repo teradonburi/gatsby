@@ -30,13 +30,10 @@ module.exports = {
       resolve: `gatsby-plugin-offline`,
       options: {
         appendScript: require.resolve(`${__dirname}/src/sw.js`),
+        globPatterns: /^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|woff|woff2|json)$/,
         runtimeCaching: [
           {
-            urlPattern: /(\.js$|\.css$)/,
-            handler: `NetworkFirst`,
-          },
-          {
-            urlPattern: /^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|js|woff|woff2|json|css)$/,
+            urlPattern: /^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|woff|woff2|json)$/,
             handler: `StaleWhileRevalidate`,
           },
         ]
