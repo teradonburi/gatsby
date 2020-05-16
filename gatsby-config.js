@@ -30,6 +30,19 @@ module.exports = {
       resolve: `gatsby-plugin-offline`,
       options: {
         appendScript: require.resolve(`${__dirname}/src/sw.js`),
+        runtimeCaching: [
+          {
+            // Use cacheFirst since these don't need to be revalidated (same RegExp
+            // and same reason as above)
+            urlPattern: /(\.js$|\.css$)/,
+            handler: `NetworkFirst`,
+          },
+          {
+            // Add runtime caching of various other page resources
+            urlPattern: /^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|js|woff|woff2|json|css)$/,
+            handler: `StaleWhileRevalidate`,
+          },
+        ]
       },
     },
     'gatsby-plugin-typescript',
