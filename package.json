@@ -82,7 +82,7 @@
     "develop": "run-p develop:*",
     "develop:client": "gatsby develop",
     "develop:server": "nodemon api/server.ts",
-    "build": "gatsby build",
+    "build": "gatsby clean && gatsby build",
     "serve": "node --max-old-space-size=2560 -r ts-node/register api/server.ts",
     "clean": "gatsby clean",
     "test": "jest",
