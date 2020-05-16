@@ -35,6 +35,7 @@
     "final-form": "^4.18.7",
     "gatsby": "^2.19.7",
     "gatsby-image": "^2.2.39",
+    "gatsby-plugin-create-client-paths": "^2.3.1",
     "gatsby-plugin-eslint": "^2.0.8",
     "gatsby-plugin-google-tagmanager": "^2.3.0",
     "gatsby-plugin-graphql-codegen": "^2.2.1",

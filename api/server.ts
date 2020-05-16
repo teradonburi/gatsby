@@ -20,6 +20,9 @@ process.on('uncaughtException', (err) => console.error(err))
 process.on('unhandledRejection', (err) => console.error(err))
 
 app.use(express.static(path.join(__dirname, '../public')))
+app.get('/app/*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname + '/../public/app/index.html'))
+})
 
 import jwt from 'jsonwebtoken'
 import passport from 'passport'

@@ -1,13 +1,13 @@
 import React from 'react'
 
 import Layout from '../components/Layout'
+import NotFound from '../components/NotFound'
 import SEO from '../components/SEO'
 
 const NotFoundPage: React.FC = () => (
   <Layout>
     <SEO title='404: Not found' />
-    <h1>NOT FOUND</h1>
-    <p>お探しのページは残念ながら見つかりませんでした。</p>
+    <NotFound />
   </Layout>
 )
 
