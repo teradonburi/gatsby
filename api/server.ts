@@ -41,7 +41,7 @@ passport.use(new BearerStrategy(function(token, done) {
   })
 }))
 
-import { users } from './routes'
+import { users, webpush } from './routes'
 
 app.use(
   '/api/users',
@@ -56,6 +56,14 @@ app.use(
   express.Router()
     .get('/:id', wrap(users.show))
 )
+
+app.use(
+  '/api/webpush',
+  express.Router()
+    .get('/key', wrap(webpush.getWebPushKey))
+    .post('/subscription', wrap(webpush.createSubscription))
+)
+
 
 // サーバを起動
 app.listen(process.env.PORT || 8080, () => console.log('Server started http://localhost:8080'))

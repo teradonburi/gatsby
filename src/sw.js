@@ -1,14 +1,24 @@
-// show a notification after 15 seconds (the notification
-// permission must be granted first)
-// setTimeout(() => {
-//   Notification.requestPermission(function(result) {
-//     if (result === 'granted') {
-//       navigator.serviceWorker.ready.then(function(registration) {
-//         registration.showNotification('Vibration Sample', {
-//           body: 'test',
-//           vibrate: [200, 100, 200, 100, 200, 100, 200],
-//         })
-//       })
-//     }
-//   })
-// }, 15000)
+self.addEventListener('push', event => {
+  const data = event.data.json()
+  const title = data.title
+  const body = data.body
+  const icon = data.icon
+  const tag = data.tag
+  const vibrate = data.vibrate
+  const url = data.url
+  const options = {
+    body,
+    icon,
+    tag,
+    vibrate,
+    data: { url },
+  }
+  event.waitUntil(self.registration.showNotification(title, options))
+})
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close()
+
+  // Web Push 通知が指定した URL に遷移する
+  event.waitUntil(self.clients.openWindow(event.notification.data.url))
+})

@@ -1,5 +1,4 @@
 module.exports = {
-  'parser': '@typescript-eslint/parser',
   'env': {
     'browser': true, // ブラウザ
     "node": true,
@@ -7,10 +6,9 @@ module.exports = {
     "jest": true
   },
   // 拡張
-  "extends": [
+  'extends': [
     "eslint:recommended",
     'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
   ],
   'parserOptions': {
     'ecmaFeatures': {
@@ -25,11 +23,24 @@ module.exports = {
   // プラグイン
   'plugins': [
     'react',
-    '@typescript-eslint',
   ],
   'globals': {
-    workbox: true,
+    'workbox': true,
+    'clients': true,
   },
+  // typescriptにのみ作用するlint設定
+  'overrides': [
+    {
+      'files': ['*.ts', '*.tsx'],
+      'extends': [
+        'plugin:@typescript-eslint/recommended',
+      ],
+      'plugins': [
+        '@typescript-eslint',
+      ],
+      'parser': '@typescript-eslint/parser',
+    }
+  ],
   'rules': {
     // 改行コード
     'linebreak-style': [

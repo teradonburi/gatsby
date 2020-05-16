@@ -22,4 +22,3 @@ export namespace redux {
     user?: model.User;
   }
 }
-

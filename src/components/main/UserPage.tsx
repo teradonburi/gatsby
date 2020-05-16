@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import { load, logout } from '../../actions/user'
 import { redux } from 'interface'
+import { sendSubscription } from '../../libs/webpush'
 
 const UserPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)
@@ -13,7 +14,9 @@ const UserPage: React.FC<RouteComponentProps> = () => {
   const logoutUser = bindActionCreators(logout, dispatch)
 
   React.useEffect(() => {
+
     if (user) {
+      sendSubscription()
       loadUser(user._id)
     }
   }, [])

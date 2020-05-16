@@ -22,6 +22,7 @@
     "@types/react-helmet": "^5.0.15",
     "@types/react-redux": "^7.1.7",
     "@types/validator": "^13.0.0",
+    "@types/web-push": "^3.3.0",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
     "babel-preset-gatsby": "^0.2.28",
@@ -69,7 +70,8 @@
     "typescript": "^3.7.5",
     "typescript-fsa": "^3.0.0",
     "typescript-fsa-reducers": "^1.2.1",
-    "validator": "^13.0.0"
+    "validator": "^13.0.0",
+    "web-push": "^3.4.4"
   },
   "devDependencies": {},
   "scripts": {
@@ -78,7 +80,7 @@
     "develop:client": "gatsby develop",
     "develop:server": "nodemon api/server.ts",
     "build": "gatsby build",
-    "serve": "ts-node  api/server.ts",
+    "serve": "node --max-old-space-size=2560 -r ts-node/register api/server.ts",
     "clean": "gatsby clean",
     "test": "jest",
     "lint": "eslint --ext .ts,.tsx ."
