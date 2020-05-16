@@ -4,6 +4,7 @@ import axios from 'axios'
 import { logout } from '../actions/user'
 import user from '../reducers/user'
 import { init as webpushInit } from '../libs/webpush'
+import { getUser } from '../auth/user'
 
 const client = axios.create({baseURL: process.env.SERVER})
 const thunkWithClient = thunk.withExtraArgument(client)
@@ -15,7 +16,7 @@ const initialData = {}
 const store = reduxCreateStore(reducer, initialData, compose(applyMiddleware(thunkWithClient)))
 
 client.interceptors.request.use(req => {
-  const token = store.getState().user.user?.token
+  const token = getUser()?.token
 
   if (token) {
     // ieのリクエストキャッシュ対策
