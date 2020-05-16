@@ -30,11 +30,12 @@ module.exports = {
       resolve: `gatsby-plugin-offline`,
       options: {
         appendScript: require.resolve(`${__dirname}/src/sw.js`),
+        // オフラインキャッシュする対象のリソースパターン、画像ウェブフォントにするだけが無難
         globPatterns: /^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|woff|woff2)$/,
         runtimeCaching: [
           {
             urlPattern: /^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|woff|woff2)$/,
-            handler: `StaleWhileRevalidate`,
+            handler: `StaleWhileRevalidate`, // ネットワーク取得とオフラインキャッシュの参照を並列で行う、ネットワーク取得時にオフラインキャッシュを更新する
           },
         ]
       },
