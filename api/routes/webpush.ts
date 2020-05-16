@@ -7,6 +7,8 @@ export async function getWebPushKey(req: Request, res: Response): Promise<Respon
 
 export async function createSubscription(req: Request, res: Response): Promise<Response | undefined> {
   const subscriptionJson = req.body.subscription
+
+  // TODO: ここでsubscriptionを保存する
   const fullUrl = req.protocol + '://' + req.get('host')
   sendPush(JSON.parse(subscriptionJson), {
     title: 'Gatsbyサンプル',
