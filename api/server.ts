@@ -82,7 +82,10 @@ if (process.env.NODE_ENV === 'production') {
   const routes = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../gatsby-express.json'), 'utf-8'))
   app.get('*', wrap(async (req: Request, res: Response): Promise<Response | undefined>  => {
     // React Appのルーティングに存在していないページの場合は404レスポンスコードを返す
-    const page = routes.pages.find((p: {path: string; matchPath?: string}) => pathToRegexp(p.path).exec(req.path) || p.matchPath ? pathToRegexp((p.matchPath || '').replace('*', '(.*)')) : false)
+    const page = routes.pages.find((p: {path: string; matchPath?: string}) =>
+      pathToRegexp(p.path).exec(req.path)
+      || p.matchPath ? pathToRegexp((p.matchPath || '').replace('*', '(.*)')).exec(req.path) : false
+    )
     if (page) {
       res.sendFile(path.join(__dirname + '/../public/' + page.path + 'index.html'))
     } else {
