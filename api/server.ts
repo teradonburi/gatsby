@@ -1,4 +1,6 @@
+import { pathToRegexp } from 'path-to-regexp'
 import path from 'path'
+import fs from 'fs'
 import { Request, Response, NextFunction } from 'express'
 import express from 'express'
 
@@ -69,10 +71,18 @@ app.use(
 )
 
 app.use(express.static(path.join(__dirname, '../public')))
-app.get('*', wrap(async (req: Request, res: Response): Promise<Response | undefined>  => {
-  res.sendFile(path.join(__dirname + '/../public/index.html'))
-  return
-}))
+// 本番時はexpressでホスティングするため、React AppのRouting情報で正しいHTTPレスポンスコードを返す必要がある
+if (process.env.NODE_ENV === 'production') {
+  const routes = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../gatsby-express.json'), 'utf-8'))
+  app.get('*', wrap(async (req: Request, res: Response): Promise<Response | undefined>  => {
+    // React Appのルーティングに存在していないページの場合は404レスポンスコードを返す
+    if (!routes.pages.some(p => pathToRegexp(p.path).exec(req.path) || p.matchPath ? pathToRegexp(p.matchPath.replace('*', '(.*)')) : false)) {
+      res.status(404)
+    }
+    res.sendFile(path.join(__dirname + '/../public/index.html'))
+    return
+  }))
+}
 
 // サーバを起動
 app.listen(process.env.PORT || 8080, () => console.log('Server started http://localhost:8080'))
