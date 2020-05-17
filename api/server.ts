@@ -69,9 +69,10 @@ app.use(
 )
 
 app.use(express.static(path.join(__dirname, '../public')))
-app.use('*', (req: Request, res: Response) => {
+app.get('*', wrap(async (req: Request, res: Response): Promise<Response | undefined>  => {
   res.sendFile(path.join(__dirname + '/../public/index.html'))
-})
+  return
+}))
 
 // サーバを起動
 app.listen(process.env.PORT || 8080, () => console.log('Server started http://localhost:8080'))
