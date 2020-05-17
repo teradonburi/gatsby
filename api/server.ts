@@ -19,10 +19,6 @@ const wrap = (fn: (req: Request, res: Response, next?: NextFunction) => Promise<
 process.on('uncaughtException', (err) => console.error(err))
 process.on('unhandledRejection', (err) => console.error(err))
 
-app.use(express.static(path.join(__dirname, '../public')))
-app.get('/app/*', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname + '/../public/app/index.html'))
-})
 
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
@@ -72,6 +68,10 @@ app.use(
     .post('/subscription', wrap(webpush.createSubscription))
 )
 
+app.use(express.static(path.join(__dirname, '../public')))
+app.use('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname + '/../public/index.html'))
+})
 
 // サーバを起動
 app.listen(process.env.PORT || 8080, () => console.log('Server started http://localhost:8080'))
