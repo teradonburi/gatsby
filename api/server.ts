@@ -73,10 +73,6 @@ app.use(
     .post('/subscription', wrap(webpush.createSubscription))
 )
 
-app.get('*', wrap(async (req: Request, res: Response): Promise<Response | undefined>  => {
-  return res.json(req.path)
-}))
-
 const io = websocket.listen(server)
 app.set('socketio', io)
 
@@ -86,10 +82,12 @@ if (process.env.NODE_ENV === 'production') {
   const routes = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../gatsby-express.json'), 'utf-8'))
   app.get('*', wrap(async (req: Request, res: Response): Promise<Response | undefined>  => {
     // React Appのルーティングに存在していないページの場合は404レスポンスコードを返す
-    if (!routes.pages.some((p: {path: string; matchPath?: string}) => pathToRegexp(p.path).exec(req.path) || p.matchPath ? pathToRegexp((p.matchPath || '').replace('*', '(.*)')) : false)) {
-      res.status(404)
+    const page = routes.pages.find((p: {path: string; matchPath?: string}) => pathToRegexp(p.path).exec(req.path) || p.matchPath ? pathToRegexp((p.matchPath || '').replace('*', '(.*)')) : false)
+    if (page) {
+      res.sendFile(path.join(__dirname + '/../public/' + page.path + 'index.html'))
+    } else {
+      res.status(404).sendFile(path.join(__dirname + '/../public/index.html'))
     }
-    res.sendFile(path.join(__dirname + '/../public/index.html'))
     return
   }))
 }
