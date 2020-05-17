@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button'
 import { load, logout } from '../../actions/user'
 import { redux } from 'interface'
 import { sendSubscription } from '../../actions/webpush'
+import { connect, disconnect, receive, send } from '../../libs/websocket'
 
 const UserPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)
@@ -15,11 +16,17 @@ const UserPage: React.FC<RouteComponentProps> = () => {
   const webPushSubscription = bindActionCreators(sendSubscription, dispatch)
 
   React.useEffect(() => {
-
+    connect().then(() => {
+      receive((data) => {
+        console.log(data)
+      })
+      send({msg: 'hello'})
+    })
     if (user) {
       webPushSubscription()
       loadUser(user._id)
     }
+    return (): void => disconnect()
   }, [])
 
   const onClickLogout = (): void => {

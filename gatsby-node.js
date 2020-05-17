@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
+// expressでホスティングするため、React Appの存在するルーティングパスを出力する
 exports.onPostBuild = ({ store }) => {
   const { redirects, pages } = store.getState()
 

@@ -1,14 +1,17 @@
 import { pathToRegexp } from 'path-to-regexp'
 import path from 'path'
 import fs from 'fs'
+import http from 'http'
 import { Request, Response, NextFunction } from 'express'
 import express from 'express'
+const app = express()
+const server = new http.Server(app)
 
 import {default as mongoose} from 'mongoose'
 mongoose.connect('mongodb://localhost/gatsby-template', { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 import { User } from './models'
 
-const app = express()
+import * as websocket from './websocket'
 
 // APIエラーハンドリング
 const wrap = (fn: (req: Request, res: Response, next?: NextFunction) => Promise<Response | undefined>) => (req: Request, res: Response, next?: NextFunction): Promise<Response | undefined> => fn(req, res, next).catch((err: Error) => {
@@ -70,13 +73,20 @@ app.use(
     .post('/subscription', wrap(webpush.createSubscription))
 )
 
+app.get('*', wrap(async (req: Request, res: Response): Promise<Response | undefined>  => {
+  return res.json(req.path)
+}))
+
+const io = websocket.listen(server)
+app.set('socketio', io)
+
 app.use(express.static(path.join(__dirname, '../public')))
 // 本番時はexpressでホスティングするため、React AppのRouting情報で正しいHTTPレスポンスコードを返す必要がある
 if (process.env.NODE_ENV === 'production') {
   const routes = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../gatsby-express.json'), 'utf-8'))
   app.get('*', wrap(async (req: Request, res: Response): Promise<Response | undefined>  => {
     // React Appのルーティングに存在していないページの場合は404レスポンスコードを返す
-    if (!routes.pages.some(p => pathToRegexp(p.path).exec(req.path) || p.matchPath ? pathToRegexp(p.matchPath.replace('*', '(.*)')) : false)) {
+    if (!routes.pages.some((p: {path: string; matchPath?: string}) => pathToRegexp(p.path).exec(req.path) || p.matchPath ? pathToRegexp((p.matchPath || '').replace('*', '(.*)')) : false)) {
       res.status(404)
     }
     res.sendFile(path.join(__dirname + '/../public/index.html'))
@@ -85,4 +95,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // サーバを起動
-app.listen(process.env.PORT || 8080, () => console.log('Server started http://localhost:8080'))
+server.listen(process.env.PORT || 8080, () => console.log('Server started http://localhost:8080'))
