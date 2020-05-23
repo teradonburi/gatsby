@@ -1,18 +1,18 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { User } from '../models'
 import { responseError } from '../libs/errorCode'
-import { model, AuthRequest } from '../../types/interface'
-import { check, validationResult } from 'express-validator'
+import { model, RequestEx, AuthRequest } from '../../types/interface'
+import { body, validationResult } from 'express-validator'
 
 type createKeys = 'validate' | 'create'
-type createAPI = (req: Request, res: Response) => Promise<Response | createKeys>
+type createAPI = (req: RequestEx, res: Response) => Promise<Response | createKeys>
 
 export const create: { [key in createKeys]: createAPI } = {
-  validate: async function(req: Request, res: Response): Promise<Response | createKeys> {
-    await check('gender').isString().run(req)
-    await check('name').isString().run(req)
-    await check('email').isEmail().run(req)
-    await check('password').isString().isLength({ min: 6 }).run(req)
+  validate: async function(req: RequestEx, res: Response): Promise<Response | createKeys> {
+    await body('gender').isString().run(req)
+    await body('name').isString().run(req)
+    await body('email').isEmail().run(req)
+    await body('password').isString().isLength({ min: 6 }).run(req)
 
     const result = validationResult(req)
     if (!result.isEmpty()) {
@@ -27,7 +27,7 @@ export const create: { [key in createKeys]: createAPI } = {
 
     return 'create'
   },
-  create: async function(req: Request, res: Response): Promise<Response | createKeys> {
+  create: async function(req: RequestEx, res: Response): Promise<Response | createKeys> {
     const { gender, name, email, password } = req.body
 
     try {
@@ -44,7 +44,7 @@ export const create: { [key in createKeys]: createAPI } = {
   },
 }
 
-export async function login(req: Request, res: Response): Promise<Response | undefined> {
+export async function login(req: RequestEx, res: Response): Promise<Response> {
   const email = req.body.email
   const password = req.body.password
 
@@ -62,7 +62,7 @@ export async function login(req: Request, res: Response): Promise<Response | und
   return res.json(user)
 }
 
-export async function show(req: AuthRequest, res: Response): Promise<Response | undefined> {
+export async function show(req: AuthRequest, res: Response): Promise<Response> {
   const id = req.params.id
   if (!req.user) {
     return responseError(res, 404)

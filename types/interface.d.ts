@@ -13,8 +13,13 @@ export namespace model {
   }
 }
 
+export type RequestEx = express.Request & {
+  data?: object | array | number | string | undefined | null; // carry data between functions
+}
+
 export type AuthRequest = Omit<express.Request, 'user'> & {
-  user?: models.User.Model & MongoDocument;
+  user?: models.User.Model & MongoDocument; // overwrite user auth
+  data?: object | array | number | string | undefined | null;
 }
 
 export namespace redux {
