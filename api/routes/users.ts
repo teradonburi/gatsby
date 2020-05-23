@@ -5,10 +5,10 @@ import { model, AuthRequest } from '../../types/interface'
 import { check, validationResult } from 'express-validator'
 
 type createKeys = 'validate' | 'create'
-type createAPI = (req: Request, res: Response) => Promise<Response | undefined | createKeys>
+type createAPI = (req: Request, res: Response) => Promise<Response | createKeys>
 
 export const create: { [key in createKeys]: createAPI } = {
-  validate: async function(req: Request, res: Response): Promise<Response | undefined | createKeys> {
+  validate: async function(req: Request, res: Response): Promise<Response | createKeys> {
     await check('gender').isString().run(req)
     await check('name').isString().run(req)
     await check('email').isEmail().run(req)
@@ -27,7 +27,7 @@ export const create: { [key in createKeys]: createAPI } = {
 
     return 'create'
   },
-  create: async function(req: Request, res: Response): Promise<Response | undefined | createKeys> {
+  create: async function(req: Request, res: Response): Promise<Response | createKeys> {
     const gender = req.body.gender
     const name = req.body.name
     const email = req.body.email
