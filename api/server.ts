@@ -26,21 +26,32 @@ const wrap = (fn: API | {[key in string]: API}) => async (req: Request, res: Res
       for (const key in fn) {
         stack[key] = fn[key]
       }
+      const keys = Object.keys(fn)
       while (stack[key]) {
         try {
-          if (res.headersSent) return
           const f = stack[key]
-          if (!f) {
-            throw new Error(`workflow error: ${key} is wrong or duplicate`)
-          }
-          const nextKey: string | Response | undefined = await f(req, res, next)
-          // 無限ループを避けるためにstackから実行したkeyは除外する
+          const nextKey: string | Response | undefined = await f?.(req, res, next)
+          // レスポンス返却済み
+          if (res.headersSent) return
+          // 無限ループを避けるためにstackから一度実行したkeyは除外する
           stack[key] = null
-          if (typeof nextKey === 'string' && stack[nextKey]) {
+          if (typeof nextKey === 'string') {
+            // 二度同じキーが指定された
+            if (!stack[nextKey]) throw new Error(`workflow error: ${nextKey} is already done from flow:${JSON.stringify(stack)}`)
             key = nextKey
-          } else {
-            break
+            continue
+          } else if (!nextKey) {
+            // Fallback: 戻り値がない場合は次のキーを探す（昇順に戻ることはなし）
+            const idx = keys.findIndex(k => k === key)
+            if (idx !== -1 && keys[idx + 1]) {
+              key = keys[idx + 1]
+              continue
+            }
+            // レスポンスを返す前にすべての処理を実行し終えてしまった
+            throw new Error(`workflow error: ${JSON.stringify(keys)}[${idx + 1}] overlapped`)
           }
+          // 間違ったキーが指定されている
+          throw new Error(`workflow error: ${nextKey} is not in ${JSON.stringify(keys)}`)
         } catch (error) {
           console.error(error)
           break

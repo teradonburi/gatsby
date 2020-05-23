@@ -16,8 +16,7 @@ export const create: { [key in createKeys]: createAPI } = {
 
     const result = validationResult(req)
     if (!result.isEmpty()) {
-      responseError(res, 400, {message: result.array()})
-      return
+      return responseError(res, 400, {message: result.array()})
     }
 
     const email = req.body.email
