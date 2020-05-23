@@ -98,6 +98,9 @@ passport.use(new BearerStrategy(function(token, done) {
 }))
 passport.use(new AnonymousStrategy())
 
+import compression from 'compression'
+app.use(compression())
+
 import bodyParser from 'body-parser'
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
