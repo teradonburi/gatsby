@@ -21,12 +21,12 @@ const wrap = (fn: API | {[key in string]: API}) => async (req: Request, res: Res
   if (typeof fn === 'object') {
 
     if (Object.keys(fn).length > 0) {
-      let key: string = Object.keys(fn)[0]
+      const keys = Object.keys(fn)
+      let key: string = keys[0]
       const stack: {[key: string]: API | null} = {}
       for (const key in fn) {
         stack[key] = fn[key]
       }
-      const keys = Object.keys(fn)
       while (stack[key]) {
         try {
           const f = stack[key]
