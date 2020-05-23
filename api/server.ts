@@ -22,6 +22,7 @@ const wrap = (fn: API | {[key in string]: API}) => async (req: Request, res: Res
 
     if (Object.keys(fn).length > 0) {
       const keys = Object.keys(fn)
+      // 最初のkeyを取得
       let key: string = keys[0]
       const stack: {[key: string]: API | null} = {}
       for (const key in fn) {
