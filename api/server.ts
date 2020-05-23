@@ -13,13 +13,33 @@ import { User } from './models'
 
 import * as websocket from './websocket'
 
+type API = (req: Request, res: Response, next?: NextFunction) => Promise<Response | undefined>
+
 // APIエラーハンドリング
-const wrap = (fn: (req: Request, res: Response, next?: NextFunction) => Promise<Response | undefined>) => (req: Request, res: Response, next?: NextFunction): Promise<Response | undefined> => fn(req, res, next).catch((err: Error) => {
-  console.error(err)
-  if (!res.headersSent) {
-    return res.status(500).json({message: 'Internal Server Error'})
+const wrap = (fn: API | API[]) => async (req: Request, res: Response, next?: NextFunction): Promise<Response | undefined> => {
+  if (Array.isArray(fn)) {
+    for (const f of fn) {
+      try {
+        if (res.headersSent) return
+        await f(req, res, next)
+      } catch (error) {
+        console.error(error)
+        if (!res.headersSent) {
+          return res.status(500).json({message: 'Internal Server Error'})
+        }
+      }
+    }
+    return
   }
-})
+  return fn(req, res, next).catch((err: Error) => {
+    console.error(err)
+    if (!res.headersSent) {
+      return res.status(500).json({message: 'Internal Server Error'})
+    }
+  })
+}
+
+
 // NodeJSエラーハンドリング
 process.on('uncaughtException', (err) => console.error(err))
 process.on('unhandledRejection', (err) => console.error(err))

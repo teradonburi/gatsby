@@ -2,31 +2,46 @@ import { Request, Response } from 'express'
 import { User } from '../models'
 import { responseError } from '../libs/errorCode'
 import { model, AuthRequest } from '../../types/interface'
+import { check, validationResult } from 'express-validator'
 
-export async function create(req: Request, res: Response): Promise<Response | undefined> {
-  const gender = req.body.gender
-  const name = req.body.name
-  const email = req.body.email
-  const password = req.body.password
+export const create = [
+  async function(req: Request, res: Response): Promise<Response | undefined> {
+    await check('gender').isString().run(req)
+    await check('name').isString().run(req)
+    await check('email').isEmail().run(req)
+    await check('password').isString().isLength({ min: 6 }).run(req)
 
-  const exist = await User.exists({email})
-  if (exist) {
-    return responseError(res, 409)
-  }
+    const result = validationResult(req)
+    if (!result.isEmpty()) {
+      responseError(res, 400, {message: result.array()})
+    }
+    return
+  },
+  async function (req: Request, res: Response): Promise<Response | undefined> {
 
-  try {
-    const user = await User.create({
-      gender,
-      name,
-      email,
-      password,
-    })
-    return res.json(user)
-  } catch (e) {
-    return responseError(res, 500, e)
-  }
+    const gender = req.body.gender
+    const name = req.body.name
+    const email = req.body.email
+    const password = req.body.password
 
-}
+    const exist = await User.exists({email})
+    if (exist) {
+      return responseError(res, 409)
+    }
+
+    try {
+      const user = await User.create({
+        gender,
+        name,
+        email,
+        password,
+      })
+      return res.json(user)
+    } catch (e) {
+      return responseError(res, 500, e)
+    }
+  },
+]
 
 export async function login(req: Request, res: Response): Promise<Response | undefined> {
   const email = req.body.email

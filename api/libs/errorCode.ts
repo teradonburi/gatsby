@@ -1,4 +1,5 @@
 import { Response } from 'express'
+import { ValidationError } from 'express-validator'
 
 export const codes: {[key: number]: {code: number; message: string}} = {
   301: {code: 301, message: 'page moved'},
@@ -9,8 +10,8 @@ export const codes: {[key: number]: {code: number; message: string}} = {
   500: {code: 500, message: 'server error'},
 }
 
-export const responseError = function(res: Response, code: number, error?: Error): Response {
-  const result = codes[code]
+export const responseError = function(res: Response, code: number, error?: Error | {message: ValidationError[]}): Response {
+  const result: {code: number; message: string | ValidationError[]} = codes[code] || {code: 500, message: 'server error'}
   if (error) {
     result.message = error?.message
   }
