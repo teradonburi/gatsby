@@ -24,10 +24,11 @@ const wrap = (fn: API | API[]) => async (req: Request, res: Response, next?: Nex
         await f(req, res, next)
       } catch (error) {
         console.error(error)
-        if (!res.headersSent) {
-          return res.status(500).json({message: 'Internal Server Error'})
-        }
+        break
       }
+    }
+    if (!res.headersSent) {
+      return res.status(500).json({message: 'Internal Server Error'})
     }
     return
   }
