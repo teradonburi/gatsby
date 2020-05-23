@@ -7,7 +7,7 @@ import { check, validationResult } from 'express-validator'
 type createKeys = 'validate' | 'create'
 type createAPI = (req: Request, res: Response) => Promise<Response | undefined | createKeys>
 
-export const create: { [key in createKeys]? : createAPI } = {
+export const create: { [key in createKeys]: createAPI } = {
   validate: async function(req: Request, res: Response): Promise<Response | undefined | createKeys> {
     await check('gender').isString().run(req)
     await check('name').isString().run(req)

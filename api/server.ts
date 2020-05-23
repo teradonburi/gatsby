@@ -17,12 +17,12 @@ import * as websocket from './websocket'
 type API = (req: Request, res: Response, next?: NextFunction) => Promise<Response | undefined | string>
 
 // APIエラーハンドリング
-const wrap = (fn: API | {[key in string]?: API}) => async (req: Request, res: Response, next?: NextFunction): Promise<Response | undefined | string> => {
+const wrap = (fn: API | {[key in string]: API}) => async (req: Request, res: Response, next?: NextFunction): Promise<Response | undefined | string> => {
   if (typeof fn === 'object') {
 
     if (Object.keys(fn).length > 0) {
       let key: string = Object.keys(fn)[0]
-      const stack: {[key: string]: API | undefined} = {}
+      const stack: {[key: string]: API | null} = {}
       for (const key in fn) {
         stack[key] = fn[key]
       }
@@ -35,7 +35,7 @@ const wrap = (fn: API | {[key in string]?: API}) => async (req: Request, res: Re
           }
           const nextKey: string | Response | undefined = await f(req, res, next)
           // 無限ループを避けるためにstackから実行したkeyは除外する
-          delete stack[key]
+          stack[key] = null
           if (typeof nextKey === 'string' && stack[nextKey]) {
             key = nextKey
           } else {
