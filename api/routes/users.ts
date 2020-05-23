@@ -28,10 +28,7 @@ export const create: { [key in createKeys]: createAPI } = {
     return 'create'
   },
   create: async function(req: Request, res: Response): Promise<Response | createKeys> {
-    const gender = req.body.gender
-    const name = req.body.name
-    const email = req.body.email
-    const password = req.body.password
+    const { gender, name, email, password } = req.body
 
     try {
       const user = await User.create({
