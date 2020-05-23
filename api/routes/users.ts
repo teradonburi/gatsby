@@ -4,8 +4,11 @@ import { responseError } from '../libs/errorCode'
 import { model, AuthRequest } from '../../types/interface'
 import { check, validationResult } from 'express-validator'
 
-export const create = [
-  async function(req: Request, res: Response): Promise<Response | undefined> {
+type createKeys = 'validate' | 'create'
+type createAPI = (req: Request, res: Response) => Promise<Response | undefined | createKeys>
+
+export const create: { [key in createKeys]? : createAPI } = {
+  validate: async function(req: Request, res: Response): Promise<Response | undefined | createKeys> {
     await check('gender').isString().run(req)
     await check('name').isString().run(req)
     await check('email').isEmail().run(req)
@@ -14,20 +17,22 @@ export const create = [
     const result = validationResult(req)
     if (!result.isEmpty()) {
       responseError(res, 400, {message: result.array()})
+      return
     }
-    return
-  },
-  async function (req: Request, res: Response): Promise<Response | undefined> {
 
-    const gender = req.body.gender
-    const name = req.body.name
     const email = req.body.email
-    const password = req.body.password
-
     const exist = await User.exists({email})
     if (exist) {
       return responseError(res, 409)
     }
+
+    return 'create'
+  },
+  create: async function(req: Request, res: Response): Promise<Response | undefined | createKeys> {
+    const gender = req.body.gender
+    const name = req.body.name
+    const email = req.body.email
+    const password = req.body.password
 
     try {
       const user = await User.create({
@@ -41,7 +46,7 @@ export const create = [
       return responseError(res, 500, e)
     }
   },
-]
+}
 
 export async function login(req: Request, res: Response): Promise<Response | undefined> {
   const email = req.body.email

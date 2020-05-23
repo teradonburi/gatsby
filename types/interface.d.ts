@@ -1,6 +1,7 @@
 import { Document } from 'mongoose'
 import express from 'express'
 
+
 export namespace model {
   export interface User extends Document {
     gender: string;

@@ -4,6 +4,7 @@ import fs from 'fs'
 import http from 'http'
 import { Request, Response, NextFunction } from 'express'
 import express from 'express'
+
 const app = express()
 const server = new http.Server(app)
 
@@ -13,18 +14,37 @@ import { User } from './models'
 
 import * as websocket from './websocket'
 
-type API = (req: Request, res: Response, next?: NextFunction) => Promise<Response | undefined>
+type API = (req: Request, res: Response, next?: NextFunction) => Promise<Response | undefined | string>
 
 // APIエラーハンドリング
-const wrap = (fn: API | API[]) => async (req: Request, res: Response, next?: NextFunction): Promise<Response | undefined> => {
-  if (Array.isArray(fn)) {
-    for (const f of fn) {
-      try {
-        if (res.headersSent) return
-        await f(req, res, next)
-      } catch (error) {
-        console.error(error)
-        break
+const wrap = (fn: API | {[key in string]?: API}) => async (req: Request, res: Response, next?: NextFunction): Promise<Response | undefined | string> => {
+  if (typeof fn === 'object') {
+
+    if (Object.keys(fn).length > 0) {
+      let key: string = Object.keys(fn)[0]
+      const stack: {[key: string]: API | undefined} = {}
+      for (const key in fn) {
+        stack[key] = fn[key]
+      }
+      while (stack[key]) {
+        try {
+          if (res.headersSent) return
+          const f = stack[key]
+          if (!f) {
+            throw new Error(`workflow error: ${key} is wrong or duplicate`)
+          }
+          const nextKey: string | Response | undefined = await f(req, res, next)
+          // 無限ループを避けるためにstackから実行したkeyは除外する
+          delete stack[key]
+          if (typeof nextKey === 'string' && stack[nextKey]) {
+            key = nextKey
+          } else {
+            break
+          }
+        } catch (error) {
+          console.error(error)
+          break
+        }
       }
     }
     if (!res.headersSent) {
