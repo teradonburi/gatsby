@@ -59,6 +59,7 @@
     "gatsby-transformer-sharp": "^2.3.13",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
+    "jest-express": "^1.12.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.26.0",
     "mongodb-memory-server": "^6.5.2",
