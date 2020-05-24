@@ -19,7 +19,7 @@ export const getSignedUrl = awsAsyncFactory<{file: File}, {signedUrl: string}, E
 	}
 )
 
-export const uploadFile = awsAsyncFactory<{file: File; signedUrl: string}, {}, Error>(
+export const uploadFile = awsAsyncFactory<{file: File; signedUrl: string}, unknown, Error>(
   'UPLOADFILE',
   (params) => {
     const file = params.file
@@ -33,7 +33,6 @@ export const uploadFile = awsAsyncFactory<{file: File; signedUrl: string}, {}, E
 
     return axios
       .put(signedUrl, file, options)
-      .then(res => res.data)
       .catch(error => {
         console.error(error)
       })
