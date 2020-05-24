@@ -10,6 +10,7 @@ export namespace model {
     password: string;
     token: string;
     thumbnail?: string;
+    uploadedImageAt?: Date;
   }
 }
 

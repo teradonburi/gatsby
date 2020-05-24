@@ -22,6 +22,19 @@ export const create = userAsyncFactory<{ gender: string; name: string; email: st
   }
 )
 
+export const update = userAsyncFactory<Partial<model.User> & {_id: string}, model.User, Error>(
+  'UPDATE',
+  (params, dispatch, getState, client: AxiosInstance) => {
+    const user = params
+    return client
+      .put(`/api/users/${params._id}`, user)
+      .then(res => res.data)
+      .then(user => {
+        return user
+      })
+  }
+)
+
 export const login = userAsyncFactory<{ email: string; password: string }, model.User | null, Error>(
   'LOGIN',
   (params, dispatch, getState, client: AxiosInstance) => {
@@ -44,12 +57,12 @@ export const logout = userAsyncFactory<{}, void, Error>(
   }
 )
 
-export const load = userAsyncFactory<{id: string}, model.User, Error>(
+export const load = userAsyncFactory<{_id: string}, model.User, Error>(
   'LOAD',
   (params, dispatch, getState, client: AxiosInstance) => {
-    const id = params.id
+    const _id = params._id
     return client
-      .get(`/api/users/${id}`)
+      .get(`/api/users/${_id}`)
       .then(res => res.data)
       .then(user => {
         return user

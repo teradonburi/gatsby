@@ -134,6 +134,7 @@ app.use(
   authenticate,
   express.Router()
     .get('/:id', wrap(users.show))
+    .put('/:id', wrap(users.update))
 )
 
 app.use(

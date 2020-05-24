@@ -41,6 +41,7 @@ const schema = new Schema({
       return jwt.sign((this as MongooseDocument)._id.toString(), secret)
     },
   },
+  uploadedImageAt: Date,
 },
 {
   versionKey: false,
@@ -68,7 +69,10 @@ schema.pre('findOneAndUpdate', async function(next) {
 })
 
 schema.virtual('thumbnail').get(function () {
-  return `https://${process.env.S3_BUCKET || test}.s3.ap-northeast-1.amazonaws.com/${this._id}?${Date.now()}`
+  if (this.uploadedImageAt) {
+    return `https://${process.env.S3_BUCKET || test}.s3.ap-northeast-1.amazonaws.com/${this._id}?${this.uploadedImageAt.getTime()}`
+  }
+  return null
 })
 
 schema.plugin(mongooseLeanVirtuals)

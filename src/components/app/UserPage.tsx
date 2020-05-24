@@ -3,7 +3,7 @@ import { RouteComponentProps } from '@reach/router'
 import { useSelector } from 'react-redux'
 import { useDispatchThunk } from '../hooks/useDispatchThunk'
 import Button from '@material-ui/core/Button'
-import { load, logout } from '../../actions/user'
+import { load, update, logout } from '../../actions/user'
 import { sendSubscription } from '../../actions/webpush'
 import { getSignedUploadUrl, uploadFile } from '../../actions/aws'
 import { connect, disconnect, receive, send } from '../../libs/websocket'
@@ -22,7 +22,7 @@ const UserPage: React.FC<RouteComponentProps> = () => {
     })
     if (user) {
       dispatch(sendSubscription())
-      dispatch(load({id: user._id}))
+      dispatch(load({_id: user._id}))
     }
     return (): void => disconnect()
   }, [])
@@ -38,7 +38,7 @@ const UserPage: React.FC<RouteComponentProps> = () => {
         .then(data => {
           if (data?.signedUrl) {
             dispatch(uploadFile({file, signedUrl: data.signedUrl}))
-              .then(() => dispatch(load({id: user._id})))
+              .then(() => dispatch(update({_id: user._id, uploadedImageAt: new Date()})))
           }
         })
     }
