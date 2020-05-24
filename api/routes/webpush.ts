@@ -1,12 +1,11 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { getVAPIDKey, sendPush } from '../libs/webpush'
-import { RequestEx, AuthRequest } from 'interface'
 
-export async function getWebPushKey(req: RequestEx, res: Response): Promise<Response | undefined> {
+export async function getWebPushKey(req: Request, res: Response): Promise<Response | undefined> {
   return res.json(getVAPIDKey())
 }
 
-export async function createSubscription(req: AuthRequest, res: Response): Promise<Response | undefined> {
+export async function createSubscription(req: Request, res: Response): Promise<Response | undefined> {
   const subscriptionJson = req.body.subscription
 
   // TODO: ここでsubscriptionを保存する

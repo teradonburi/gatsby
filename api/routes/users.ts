@@ -1,14 +1,14 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { User } from '../models'
 import { responseError } from '../libs/errorCode'
 import { body, validationResult } from 'express-validator'
-import { model, RequestEx, AuthRequest } from 'interface'
+import { model } from 'interface'
 
 type createKeys = 'validate' | 'create'
-type createAPI = (req: RequestEx, res: Response) => Promise<Response | createKeys>
+type createAPI = (req: Request, res: Response) => Promise<Response | createKeys>
 
 export const create: { [key in createKeys]: createAPI } = {
-  validate: async function(req: RequestEx, res: Response): Promise<Response | createKeys> {
+  validate: async function(req: Request, res: Response): Promise<Response | createKeys> {
     await body('gender').isString().run(req)
     await body('name').isString().run(req)
     await body('email').isEmail().run(req)
@@ -27,7 +27,7 @@ export const create: { [key in createKeys]: createAPI } = {
 
     return 'create'
   },
-  create: async function(req: RequestEx, res: Response): Promise<Response | createKeys> {
+  create: async function(req: Request, res: Response): Promise<Response | createKeys> {
     const { gender, name, email, password } = req.body
 
     try {
@@ -45,10 +45,10 @@ export const create: { [key in createKeys]: createAPI } = {
 }
 
 type updateKeys = 'validate' | 'update'
-type updateAPI = (req: RequestEx, res: Response) => Promise<Response | updateKeys>
+type updateAPI = (req: Request, res: Response) => Promise<Response | updateKeys>
 
 export const update: { [key in updateKeys]: updateAPI } = {
-  validate: async function(req: RequestEx): Promise<Response | updateKeys> {
+  validate: async function(req: Request): Promise<Response | updateKeys> {
 
     // exclude not related field to model
     const update: Partial<model.User> = {}
@@ -61,11 +61,12 @@ export const update: { [key in updateKeys]: updateAPI } = {
 
     return 'update'
   },
-  update: async function(req: RequestEx, res: Response): Promise<Response | updateKeys> {
+  update: async function(req: Request, res: Response): Promise<Response | updateKeys> {
+    const data = req.data as {uploadedImageAt?: Date}
 
-    if (req.data.uploadedImageAt) {
+    if (data?.uploadedImageAt) {
       // クライアントの時間は信用しない
-      req.data.uploadedImageAt = new Date()
+      data.uploadedImageAt = new Date()
     }
 
     try {
@@ -78,7 +79,7 @@ export const update: { [key in updateKeys]: updateAPI } = {
   },
 }
 
-export async function login(req: RequestEx, res: Response): Promise<Response> {
+export async function login(req: Request, res: Response): Promise<Response> {
   const email = req.body.email
   const password = req.body.password
 
@@ -97,7 +98,7 @@ export async function login(req: RequestEx, res: Response): Promise<Response> {
   return res.json(user)
 }
 
-export async function show(req: AuthRequest, res: Response): Promise<Response> {
+export async function show(req: Request, res: Response): Promise<Response> {
   const id = req.params.id
   if (!req.user) {
     return responseError(res, 404)

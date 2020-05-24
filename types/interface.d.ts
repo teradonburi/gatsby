@@ -1,6 +1,11 @@
 import { Document } from 'mongoose'
-import express from 'express'
 
+declare module 'express' {
+  export interface Request {
+    data?: unknown;
+    user?: models.User.Model & MongoDocument; // overwrite user auth
+  }
+}
 
 export namespace model {
   export interface User extends Document {
@@ -12,15 +17,6 @@ export namespace model {
     thumbnail?: string;
     uploadedImageAt?: Date;
   }
-}
-
-export type RequestEx = express.Request & {
-  data?: object | array | number | string | undefined | null; // carry data between functions
-}
-
-export type AuthRequest = Omit<express.Request, 'user'> & {
-  user?: models.User.Model & MongoDocument; // overwrite user auth
-  data?: object | array | number | string | undefined | null;
 }
 
 export namespace redux {
