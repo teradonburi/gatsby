@@ -169,3 +169,6 @@ if (process.env.NODE_ENV === 'production') {
 
 // サーバを起動
 server.listen(process.env.PORT || 8080, () => console.log('Server started http://localhost:8080'))
+
+// get whole api paths for test
+export const apiPaths = app._router.stack

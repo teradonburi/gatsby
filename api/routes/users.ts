@@ -50,7 +50,7 @@ type updateAPI = (req: RequestEx, res: Response) => Promise<Response | updateKey
 export const update: { [key in updateKeys]: updateAPI } = {
   validate: async function(req: RequestEx): Promise<Response | updateKeys> {
 
-    // exclude model data
+    // exclude not related field to model
     const update: Partial<model.User> = {}
     for (const key in User.schema.obj) {
       if (req.body[key]) {
