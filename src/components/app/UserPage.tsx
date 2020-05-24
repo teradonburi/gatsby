@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button'
 import { load, logout } from '../../actions/user'
 import { redux } from 'interface'
 import { sendSubscription } from '../../actions/webpush'
-import { getSignedUrl } from '../../actions/aws'
+import { getSignedUrl, uploadFile } from '../../actions/aws'
 import { connect, disconnect, receive, send } from '../../libs/websocket'
 
 const UserPage: React.FC<RouteComponentProps> = () => {
@@ -34,7 +34,12 @@ const UserPage: React.FC<RouteComponentProps> = () => {
   const upload = React.useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     const file: File | undefined = e.target.files?.[0]
     if (file) {
-      dispatch(getSignedUrl({file})).then(signedUrl => console.log(signedUrl))
+      dispatch(getSignedUrl({file}))
+        .then(data => {
+          if (data.signedUrl) {
+            dispatch(uploadFile({file, signedUrl: data.signedUrl}))
+          }
+        })
     }
   }, [])
 

@@ -110,13 +110,16 @@ app.use(bodyParser.json())
 
 import { users, webpush } from './routes'
 
-app.get(
-  '/api/signedUrl', wrap(async function(req: Request, res: Response): Promise<Response> {
-    const fileName = req.query?.fileName?.toString()
-    const fileType = req.query?.fileType?.toString()
-    const signedUrl = await s3.getSignedUrl(fileName, fileType, process.env.S3_BUCKET || 'test')
-    return res.json(signedUrl)
-  }),
+
+app.use(
+  '/api/signedUrl',
+  express.Router()
+    .get('/', wrap(async function(req: Request, res: Response): Promise<Response> {
+      const fileName = req.query?.fileName?.toString()
+      const fileType = req.query?.fileType?.toString()
+      const signedUrl = await s3.getSignedUrl(fileName, fileType, process.env.S3_BUCKET || 'test')
+      return res.json({signedUrl})
+    }))
 )
 
 app.use(

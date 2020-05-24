@@ -24,7 +24,6 @@ class S3 {
       Key: fileName,
       Expires: 60,
       ContentType: fileType,
-      ACL: 'public-read',
     }
 
     const result = await new Promise<{signedUrl?: string; error?: Error}>((resolve, reject) => {
