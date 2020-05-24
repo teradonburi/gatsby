@@ -1,4 +1,5 @@
 import React from 'react'
+import { navigate } from 'gatsby'
 import { RouteComponentProps } from '@reach/router'
 import { Form, Field } from 'react-final-form'
 import { ValidationErrors, SubmissionErrors } from 'final-form'
@@ -14,7 +15,6 @@ import {
 
 import TextInput from '../mui-form/TextInput'
 import { model, redux } from 'interface'
-import { navigate } from 'gatsby'
 
 type FormValues = Pick<model.User, 'email' | 'password'>
 

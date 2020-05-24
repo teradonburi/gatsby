@@ -1,8 +1,8 @@
 import { Response } from 'express'
 import { User } from '../models'
 import { responseError } from '../libs/errorCode'
-import { model, RequestEx, AuthRequest } from '../../types/interface'
 import { body, validationResult } from 'express-validator'
+import { model, RequestEx, AuthRequest } from 'interface'
 
 type createKeys = 'validate' | 'create'
 type createAPI = (req: RequestEx, res: Response) => Promise<Response | createKeys>

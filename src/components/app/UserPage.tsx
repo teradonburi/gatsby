@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux'
 import { useDispatchThunk } from '../hooks/useDispatchThunk'
 import Button from '@material-ui/core/Button'
 import { load, logout } from '../../actions/user'
-import { redux } from 'interface'
 import { sendSubscription } from '../../actions/webpush'
 import { getSignedUrl, uploadFile } from '../../actions/aws'
 import { connect, disconnect, receive, send } from '../../libs/websocket'
+import { redux } from 'interface'
 
 const UserPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)

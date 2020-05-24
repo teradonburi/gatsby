@@ -5,9 +5,9 @@ import mongooseLeanDefaults from 'mongoose-lean-defaults'
 import mongooseLeanMethods from 'mongoose-lean-methods'
 import validator from 'validator'
 import jwt from 'jsonwebtoken'
-import { model } from '../../types/interface'
 import { createHash } from '../libs/hash'
 import { secret } from '../config'
+import { model } from 'interface'
 
 const schema = new Schema({
   gender: {type: String, enum: ['male', 'female', 'other']},

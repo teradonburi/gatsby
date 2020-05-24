@@ -1,6 +1,6 @@
 import { Response } from 'express'
 import { getVAPIDKey, sendPush } from '../libs/webpush'
-import { RequestEx, AuthRequest } from '../../types/interface'
+import { RequestEx, AuthRequest } from 'interface'
 
 export async function getWebPushKey(req: RequestEx, res: Response): Promise<Response | undefined> {
   return res.json(getVAPIDKey())

@@ -1,8 +1,8 @@
 import actionCreatorFactory from 'typescript-fsa'
-import { AxiosInstance } from 'axios'
-import { model } from 'interface'
-import { setUser, deleteUser } from '../storage/user'
 import { asyncFactory } from 'typescript-fsa-redux-thunk'
+import { AxiosInstance } from 'axios'
+import { setUser, deleteUser } from '../storage/user'
+import { model } from 'interface'
 
 const userFactory = actionCreatorFactory('USER')
 const userAsyncFactory = asyncFactory(userFactory)
