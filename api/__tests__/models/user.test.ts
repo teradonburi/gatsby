@@ -1,5 +1,5 @@
-import { mongo, deleteAll } from './mongo'
-import { User } from '../models'
+import { mongo, deleteAll } from '../mongo'
+import { User } from '../../models'
 
 afterEach(async () => {
   await deleteAll()
