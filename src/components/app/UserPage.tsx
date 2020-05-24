@@ -5,7 +5,7 @@ import { useDispatchThunk } from '../hooks/useDispatchThunk'
 import Button from '@material-ui/core/Button'
 import { load, logout } from '../../actions/user'
 import { sendSubscription } from '../../actions/webpush'
-import { getSignedUrl, uploadFile } from '../../actions/aws'
+import { getSignedUploadUrl, uploadFile } from '../../actions/aws'
 import { connect, disconnect, receive, send } from '../../libs/websocket'
 import { redux } from 'interface'
 
@@ -33,11 +33,12 @@ const UserPage: React.FC<RouteComponentProps> = () => {
 
   const upload = React.useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     const file: File | undefined = e.target.files?.[0]
-    if (file) {
-      dispatch(getSignedUrl({file}))
+    if (file && user) {
+      dispatch(getSignedUploadUrl({file, path: user._id}))
         .then(data => {
-          if (data.signedUrl) {
+          if (data?.signedUrl) {
             dispatch(uploadFile({file, signedUrl: data.signedUrl}))
+              .then(() => dispatch(load({id: user._id})))
           }
         })
     }
@@ -48,6 +49,7 @@ const UserPage: React.FC<RouteComponentProps> = () => {
       <div style={{marginBottom: 20}}>
         <div>ようこそ、{user?.name}さん</div>
         {user?.email && <div>メールアドレス: {user.email}</div>}
+        {user?.thumbnail && <img style={{objectFit: 'contain', maxWidth: 100}} src={user.thumbnail} />}
         <input type='file' onChange={upload} />
       </div>
       <Button variant='contained' color='primary' onClick={onClickLogout}>ログアウト</Button>

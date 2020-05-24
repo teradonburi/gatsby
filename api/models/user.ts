@@ -68,8 +68,7 @@ schema.pre('findOneAndUpdate', async function(next) {
 })
 
 schema.virtual('thumbnail').get(function () {
-  // TODO:固定じゃなくて変える
-  return 'https://avatars1.githubusercontent.com/u/771218?s=460&v=4'
+  return `https://${process.env.S3_BUCKET || test}.s3.ap-northeast-1.amazonaws.com/${this._id}?${Date.now()}`
 })
 
 schema.plugin(mongooseLeanVirtuals)

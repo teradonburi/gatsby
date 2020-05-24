@@ -19,10 +19,6 @@ export const create = userAsyncFactory<{ gender: string; name: string; email: st
         setUser(user)
         return user
       })
-      .catch(error => {
-        console.error(error)
-        return {error}
-      })
   }
 )
 
@@ -37,19 +33,14 @@ export const login = userAsyncFactory<{ email: string; password: string }, model
         setUser(user)
         return user
       })
-      .catch(error => {
-        // dispatch(loadAction.failed({params: {}, error}))
-        console.error(error)
-        return error
-      })
   }
 )
 
-export const logout = userAsyncFactory<{}, null, Error>(
+export const logout = userAsyncFactory<{}, void, Error>(
   'LOGOUT',
   () => {
     deleteUser()
-    return null
+    return
   }
 )
 
@@ -61,12 +52,7 @@ export const load = userAsyncFactory<{id: string}, model.User, Error>(
       .get(`/api/users/${id}`)
       .then(res => res.data)
       .then(user => {
-        setUser(user)
         return user
-      })
-      .catch(error => {
-        console.error(error)
-        return error
       })
   }
 )

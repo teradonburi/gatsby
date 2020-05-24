@@ -11,8 +11,14 @@ const reducer = combineReducers({
   user,
 })
 
+interface WindowEx extends Window {
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: typeof compose;
+}
+declare let window: WindowEx
+
+const composeEnhancers = process.env.NODE_ENV !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
 const initialData = {}
-const store = reduxCreateStore(reducer, initialData, compose(applyMiddleware(thunkWithClient)))
+const store = reduxCreateStore(reducer, initialData, composeEnhancers(applyMiddleware(thunkWithClient)))
 
 client.interceptors.request.use(req => {
   const token = getUser()?.token

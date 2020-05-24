@@ -17,7 +17,7 @@ class S3 {
     })
   }
 
-  async getSignedUrl(fileName: string, fileType: string, bucketName: string): Promise<string | null> {
+  async getSignedUploadUrl(fileName: string, fileType: string, bucketName: string): Promise<string | null> {
 
     const s3Params = {
       Bucket: bucketName,
