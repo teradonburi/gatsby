@@ -2,11 +2,11 @@ import axios, { AxiosInstance } from 'axios'
 import actionCreatorFactory from 'typescript-fsa'
 import { asyncFactory } from 'typescript-fsa-redux-thunk'
 
-const getSignedUrlAction = asyncFactory(actionCreatorFactory('AWS/SIGNEDURL'))
-const uploadFileAction = asyncFactory(actionCreatorFactory('AWS/UPLOADFILE'))
+const awsFactory = actionCreatorFactory('AWS')
+const awsAsyncFactory = asyncFactory(awsFactory)
 
-export const getSignedUrl = getSignedUrlAction<{file: File}, {signedUrl: string}, Error>(
-  'getSignedUrl',
+export const getSignedUrl = awsAsyncFactory<{file: File}, {signedUrl: string}, Error>(
+  'GETSIGNEDURL',
   (params, dispatch, getState, client: AxiosInstance) => {
     const file = params.file
 
@@ -19,8 +19,8 @@ export const getSignedUrl = getSignedUrlAction<{file: File}, {signedUrl: string}
 	}
 )
 
-export const uploadFile = uploadFileAction<{file: File; signedUrl: string}, {}, Error>(
-  'uploadFile',
+export const uploadFile = awsAsyncFactory<{file: File; signedUrl: string}, {}, Error>(
+  'UPLOADFILE',
   (params) => {
     const file = params.file
     const signedUrl = params.signedUrl

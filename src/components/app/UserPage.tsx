@@ -22,7 +22,7 @@ const UserPage: React.FC<RouteComponentProps> = () => {
     })
     if (user) {
       dispatch(sendSubscription())
-      dispatch(load(user._id))
+      dispatch(load({id: user._id}))
     }
     return (): void => disconnect()
   }, [])

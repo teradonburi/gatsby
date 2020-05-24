@@ -1,77 +1,72 @@
 import actionCreatorFactory from 'typescript-fsa'
 import { AxiosInstance } from 'axios'
-import { Store } from 'redux'
 import { model } from 'interface'
 import { setUser, deleteUser } from '../storage/user'
+import { asyncFactory } from 'typescript-fsa-redux-thunk'
 
-const actionCreator = actionCreatorFactory()
-
-// typescript-fsaで<params,result,error>の型を定義
-export const createAction = actionCreator.async<{user: Partial<model.User>}, {user: model.User}, {error: Error}>('user/CREATE')
-export const loadAction = actionCreator.async<{}, {user: model.User | null}, {error: Error}>('user/LOAD')
+const userFactory = actionCreatorFactory('USER')
+const userAsyncFactory = asyncFactory(userFactory)
 
 // actionの定義
-export function create(user: Partial<model.User>) {
-  // clientはaxiosの付与したクライアントパラメータ
-  // 非同期処理をPromise形式で記述できる
-  return (dispatch: Store['dispatch'], getState: Store['getState'], client: AxiosInstance): Promise<void> => {
+export const create = userAsyncFactory<{ gender: string; name: string; email: string; password: string }, model.User, Error>(
+  'CREATE',
+  (params, dispatch, getState, client: AxiosInstance) => {
+    const user = params
     return client
       .post('/api/users/signup', user)
       .then(res => res.data)
       .then(user => {
         setUser(user)
-        dispatch(createAction.done({
-          params: { user },
-          result: { user },
-        }))
+        return user
       })
       .catch(error => {
-        dispatch(createAction.failed({params: { user }, error}))
+        console.error(error)
+        return {error}
       })
   }
-}
+)
 
-export function login(user: Partial<model.User>) {
-  return (dispatch: Store['dispatch'], getState: Store['getState'], client: AxiosInstance): Promise<void> => {
+export const login = userAsyncFactory<{ email: string; password: string }, model.User | null, Error>(
+  'LOGIN',
+  (params, dispatch, getState, client: AxiosInstance) => {
+    const user = params
     return client
       .post('/api/users/login', user)
       .then(res => res.data)
       .then(user => {
         setUser(user)
-        dispatch(loadAction.done({
-          params: {},
-          result: { user },
-        }))
+        return user
       })
       .catch(error => {
-        dispatch(loadAction.failed({params: {}, error}))
+        // dispatch(loadAction.failed({params: {}, error}))
+        console.error(error)
+        return error
       })
   }
-}
+)
 
-export function logout() {
-  return (dispatch: Store['dispatch']): void => {
+export const logout = userAsyncFactory<{}, null, Error>(
+  'LOGOUT',
+  () => {
     deleteUser()
-    dispatch(loadAction.done({
-      params: {  },
-      result: { user: null },
-    }))
+    return null
   }
-}
+)
 
-export function load(id: string) {
-  return (dispatch: Store['dispatch'], getState: Store['getState'], client: AxiosInstance): Promise<void> => {
+export const load = userAsyncFactory<{id: string}, model.User, Error>(
+  'LOAD',
+  (params, dispatch, getState, client: AxiosInstance) => {
+    const id = params.id
     return client
       .get(`/api/users/${id}`)
       .then(res => res.data)
       .then(user => {
-        dispatch(loadAction.done({
-          params: {},
-          result: { user },
-        }))
+        setUser(user)
+        return user
       })
       .catch(error => {
-        dispatch(loadAction.failed({params: {}, error}))
+        console.error(error)
+        return error
       })
   }
-}
+)

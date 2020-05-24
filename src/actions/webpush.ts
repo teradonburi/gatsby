@@ -1,5 +1,9 @@
 import { AxiosInstance } from 'axios'
-import { Store } from 'redux'
+import actionCreatorFactory from 'typescript-fsa'
+import { asyncFactory } from 'typescript-fsa-redux-thunk'
+
+const webpushFactory = actionCreatorFactory('WEBPUSH')
+const webpushAyncFactory = asyncFactory(webpushFactory)
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -12,9 +16,10 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return outputArray
 }
 
-export function sendSubscription() {
-  return (dispatch: Store['dispatch'], getState: Store['getState'], client: AxiosInstance): Promise<void> => {
-    // 通知承認要求
+export const sendSubscription = webpushAyncFactory<{}, {}, Error>(
+  'SUBSCRIPTION',
+   (params, dispatch, getState, client: AxiosInstance): Promise<void> => {
+     // 通知承認要求
     return new Promise((resolve, reject) => {
 
       if (localStorage.getItem('vapidPublicKey')) {
@@ -56,6 +61,6 @@ export function sendSubscription() {
             })
         }
       })
-    })
-  }
-}
+     })
+   }
+)
