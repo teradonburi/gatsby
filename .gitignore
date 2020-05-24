@@ -6,3 +6,4 @@ public
 .DS_Store
 types/graphql-types.d.ts
 gatsby-express.json
+.env

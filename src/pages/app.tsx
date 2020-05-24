@@ -1,9 +1,9 @@
 import React from 'react'
 import { Router } from '@reach/router'
 import Layout from '../components/Layout'
-import SignupPage from '../components/main/SignupPage'
-import UserPage from '../components/main/UserPage'
-import LoginPage from '../components/main/LoginPage'
+import SignupPage from '../components/app/SignupPage'
+import UserPage from '../components/app/UserPage'
+import LoginPage from '../components/app/LoginPage'
 import PrivateRoute from '../components/PrivateRoute'
 import NotFound from '../components/NotFound'
 

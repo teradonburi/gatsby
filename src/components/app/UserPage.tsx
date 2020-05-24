@@ -1,19 +1,17 @@
 import React from 'react'
 import { RouteComponentProps } from '@reach/router'
-import { bindActionCreators } from 'redux'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useDispatchThunk } from '../hooks/useDispatchThunk'
 import Button from '@material-ui/core/Button'
 import { load, logout } from '../../actions/user'
 import { redux } from 'interface'
 import { sendSubscription } from '../../actions/webpush'
+import { getSignedUrl } from '../../actions/aws'
 import { connect, disconnect, receive, send } from '../../libs/websocket'
 
 const UserPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)
-  const dispatch = useDispatch()
-  const loadUser = bindActionCreators(load, dispatch)
-  const logoutUser = bindActionCreators(logout, dispatch)
-  const webPushSubscription = bindActionCreators(sendSubscription, dispatch)
+  const dispatch = useDispatchThunk()
 
   React.useEffect(() => {
     connect().then(() => {
@@ -23,21 +21,29 @@ const UserPage: React.FC<RouteComponentProps> = () => {
       send({msg: 'hello'})
     })
     if (user) {
-      webPushSubscription()
-      loadUser(user._id)
+      dispatch(sendSubscription())
+      dispatch(load(user._id))
     }
     return (): void => disconnect()
   }, [])
 
-  const onClickLogout = (): void => {
-    logoutUser()
-  }
+  const onClickLogout = React.useCallback((): void => {
+    dispatch(logout())
+  }, [])
+
+  const upload = React.useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
+    const file: File | undefined = e.target.files?.[0]
+    if (file) {
+      dispatch(getSignedUrl({file})).then(signedUrl => console.log(signedUrl))
+    }
+  }, [])
 
   return (
     <div>
-      <div>
+      <div style={{marginBottom: 20}}>
         <div>ようこそ、{user?.name}さん</div>
         {user?.email && <div>メールアドレス: {user.email}</div>}
+        <input type='file' onChange={upload} />
       </div>
       <Button variant='contained' color='primary' onClick={onClickLogout}>ログアウト</Button>
     </div>

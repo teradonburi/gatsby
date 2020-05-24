@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
 import { pathToRegexp } from 'path-to-regexp'
 import path from 'path'
 import fs from 'fs'
@@ -13,6 +15,7 @@ mongoose.connect('mongodb://localhost/gatsby-template', { useCreateIndex: true, 
 import { User } from './models'
 
 import * as websocket from './websocket'
+import { s3 } from './libs/aws'
 
 type API = (req: Request, res: Response, next?: NextFunction) => Promise<Response | undefined | string>
 
@@ -106,6 +109,15 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 import { users, webpush } from './routes'
+
+app.get(
+  '/api/signedUrl', wrap(async function(req: Request, res: Response): Promise<Response> {
+    const fileName = req.query?.fileName?.toString()
+    const fileType = req.query?.fileType?.toString()
+    const signedUrl = await s3.getSignedUrl(fileName, fileType, process.env.S3_BUCKET || 'test')
+    return res.json(signedUrl)
+  }),
+)
 
 app.use(
   '/api/users',
