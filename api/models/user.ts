@@ -70,7 +70,7 @@ schema.pre('findOneAndUpdate', async function(next) {
 
 schema.virtual('thumbnail').get(function () {
   if (this.uploadedImageAt) {
-    return `https://${process.env.S3_BUCKET || test}.s3.ap-northeast-1.amazonaws.com/${this._id}?${this.uploadedImageAt.getTime()}`
+    return `https://${process.env.S3_BUCKET || 'test'}.s3.ap-northeast-1.amazonaws.com/${this._id}?${this.uploadedImageAt.getTime()}`
   }
   return null
 })

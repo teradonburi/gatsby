@@ -70,6 +70,7 @@ export const update: { [key in updateKeys]: updateAPI } = {
 
     try {
       const user = await User.findByIdAndUpdate(req.params.id, {$set: req.body})
+        .lean({virtuals: true, defaults: true})
       return res.json(user)
     } catch (e) {
       return responseError(res, 500, e)
@@ -87,6 +88,7 @@ export async function login(req: RequestEx, res: Response): Promise<Response> {
 
   const user: model.User | null = await User.findOne({email, password})
     .select('+token')
+    .lean({virtuals: true, defaults: true})
 
   if (!user) {
     return responseError(res, 404)
@@ -104,7 +106,9 @@ export async function show(req: AuthRequest, res: Response): Promise<Response> {
     return responseError(res, 400)
   }
 
-  const user = await User.findById(id).select('name email')
+  const user = await User.findById(id)
+    .select('name email')
+    .lean({virtuals: true, defaults: true})
 
   return res.json(user)
 }
