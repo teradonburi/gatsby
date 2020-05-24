@@ -2,8 +2,8 @@ import React from 'react'
 import { RouteComponentProps } from '@reach/router'
 import { Form, Field } from 'react-final-form'
 import { ValidationErrors, SubmissionErrors } from 'final-form'
-import { useDispatch, useSelector } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { useSelector } from 'react-redux'
+import { useDispatchThunk } from '../hooks/useDispatchThunk'
 import { create } from '../../actions/user'
 import {
   Card,
@@ -21,8 +21,7 @@ type FormValues = Pick<model.User, 'gender' | 'name' | 'email' | 'password'>
 
 const SignupPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)
-  const dispatch = useDispatch()
-  const userCreate = bindActionCreators(create, dispatch)
+  const dispatch = useDispatchThunk()
 
   const validate = (values: FormValues): ValidationErrors => {
     const errors: Partial<FormValues> = {}
@@ -48,7 +47,7 @@ const SignupPage: React.FC<RouteComponentProps> = () => {
       email: values.email,
       password: values.password,
     }
-    userCreate(data)
+    dispatch(create(data))
   }
 
   if (user) {
