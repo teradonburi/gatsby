@@ -1,7 +1,7 @@
 import actionCreatorFactory from 'typescript-fsa'
 import { asyncFactory } from 'typescript-fsa-redux-thunk'
 import { AxiosInstance } from 'axios'
-import { setUser, deleteUser } from '../storage/user'
+import { setStorage, deleteStorage } from '../libs/localStorage'
 import { model } from 'interface'
 
 const userFactory = actionCreatorFactory('USER')
@@ -16,7 +16,7 @@ export const create = userAsyncFactory<{ gender: string; name: string; email: st
       .post('/api/users/signup', user)
       .then(res => res.data)
       .then(user => {
-        setUser(user)
+        setStorage('user', user)
         return user
       })
   }
@@ -43,7 +43,7 @@ export const login = userAsyncFactory<{ email: string; password: string }, model
       .post('/api/users/login', user)
       .then(res => res.data)
       .then(user => {
-        setUser(user)
+        setStorage('user', user)
         return user
       })
   }
@@ -52,7 +52,7 @@ export const login = userAsyncFactory<{ email: string; password: string }, model
 export const logout = userAsyncFactory<{}, void, Error>(
   'LOGOUT',
   () => {
-    deleteUser()
+    deleteStorage('user')
     return
   }
 )

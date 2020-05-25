@@ -4,7 +4,8 @@ import axios from 'axios'
 import { isBrowser } from '../libs/util'
 import { logout } from '../actions/user'
 import user from '../reducers/user'
-import { getUser } from '../storage/user'
+import { getStorage } from '../libs/localStorage'
+import { model } from 'interface'
 
 const client = axios.create({baseURL: process.env.SERVER})
 const thunkWithClient = thunk.withExtraArgument(client)
@@ -22,7 +23,7 @@ const initialData = {}
 const store = reduxCreateStore(reducer, initialData, composeEnhancers(applyMiddleware(thunkWithClient)))
 
 client.interceptors.request.use(req => {
-  const token = getUser()?.token
+  const token = (getStorage('user') as Partial<model.User>)?.token
 
   if (token) {
     // ieのリクエストキャッシュ対策
