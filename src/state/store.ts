@@ -1,6 +1,7 @@
 import { combineReducers, createStore as reduxCreateStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import axios from 'axios'
+import { isBrowser } from '../libs/util'
 import { logout } from '../actions/user'
 import user from '../reducers/user'
 import { getUser } from '../storage/user'
@@ -16,7 +17,7 @@ interface WindowEx extends Window {
 }
 declare let window: WindowEx
 
-const composeEnhancers = process.env.NODE_ENV !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
+const composeEnhancers = isBrowser() && process.env.NODE_ENV !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
 const initialData = {}
 const store = reduxCreateStore(reducer, initialData, composeEnhancers(applyMiddleware(thunkWithClient)))
 

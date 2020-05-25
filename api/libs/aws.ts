@@ -1,11 +1,12 @@
 import AWS from 'aws-sdk'
+import config from 'config'
 
 if (process.env.NODE_ENV !== 'production') {
   AWS.config.logger = console // 通信のデバッグ用
 }
 
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID // IAMユーザの認証情報の「アクセスキーID」から確認できます
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY // IAMユーザのシークレットアクセスキー。アクセスキーを作ったときだけ見れるやつです
+const accessKeyId = config.get('accessKeyId') as string // IAMユーザの認証情報の「アクセスキーID」から確認できます
+const secretAccessKey = config.get('secretAccessKey') as string // IAMユーザのシークレットアクセスキー。アクセスキーを作ったときだけ見れるやつです
 
 class S3 {
   private s3: AWS.S3

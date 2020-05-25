@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
+import config from 'config'
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost/gatsby-template', {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+mongoose.connect(config.get('mongoDB'), {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 
 import * as moment from 'moment'
 import repl from 'repl'

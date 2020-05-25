@@ -1,10 +1,10 @@
 import webPush from 'web-push'
-import { vapidPublicKey, vapidSecretKey } from '../config'
+import config from 'config'
 
 // 一度のみ払い出しすれば良いので本番は固定のものを使う
 const vapidKeys = {
-  publicKey: vapidPublicKey,
-  privateKey: vapidSecretKey,
+  publicKey: config.get('vapidPublicKey') as string,
+  privateKey: config.get('vapidSecretKey')  as string,
 }
 
 webPush.setVapidDetails(

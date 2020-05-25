@@ -6,7 +6,7 @@ import mongooseLeanMethods from 'mongoose-lean-methods'
 import validator from 'validator'
 import jwt from 'jsonwebtoken'
 import { createHash } from '../libs/hash'
-import { secret } from '../config'
+import config from 'config'
 import { model } from 'interface'
 
 const schema = new Schema({
@@ -38,7 +38,7 @@ const schema = new Schema({
       message: (): string => '不正なトークンです。',
     },
     default: function(): string {
-      return jwt.sign((this as MongooseDocument)._id.toString(), secret)
+      return jwt.sign((this as MongooseDocument)._id.toString(), config.get('secret'))
     },
   },
   uploadedImageAt: Date,

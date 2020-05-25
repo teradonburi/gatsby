@@ -1,5 +1,5 @@
 import { model } from 'interface'
-export const isBrowser = (): boolean => typeof window !== 'undefined'
+import { isBrowser } from '../libs/util'
 
 export function getUser(): model.User | null {
   if (!isBrowser()) return null

@@ -24,14 +24,20 @@ change .env.production to prod server url
 ```
 SERVER=http://localhost:8080
 WS_SERVER=http://localhost:8080
+NODE_ENV='production'
 ```
 
-change api/config.js enviroment variables
+set enviroment variables in config/default.ts with .env or export command
 
 ```
-export const secret = process.env.SECRET
-export const vapidPublicKey = process.env.VAPID_PUBLIC_KEY
-export const vapidSecretKey = process.env.VAPID_PRIVATE_KEY
+export = {
+  secret: process.env.SECRET,
+  mongoDB: process.env.MONGO_DB,
+  vapidPublicKey: process.env.VAPID_PUBLIC_KEY,
+  vapidSecretKey: process.env.VAPID_PRIVATE_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+}
 ```
 
 create VAPID keys (for webpush) by follow command

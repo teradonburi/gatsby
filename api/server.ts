@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
+import config from 'config'
 import { pathToRegexp } from 'path-to-regexp'
 import path from 'path'
 import fs from 'fs'
@@ -11,7 +12,7 @@ const app = express()
 const server = new http.Server(app)
 
 import {default as mongoose} from 'mongoose'
-mongoose.connect('mongodb://localhost/gatsby-template', { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+mongoose.connect(config.get('mongoDB'), { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 import { User } from './models'
 
 import * as websocket from './websocket'
@@ -88,10 +89,9 @@ import { Strategy as BearerStrategy } from 'passport-http-bearer'
 const authenticate = passport.authenticate('bearer', {session: false})
 const partialAuth = passport.authenticate(['bearer', 'anonymous'], {session: false})
 
-import { secret } from './config'
 passport.use(new BearerStrategy(function(token, done) {
   // 認証APIの場合はここを通るよ
-  jwt.verify(token, secret, async function(err) {
+  jwt.verify(token, config.get('secret'), async function(err) {
     if (err) return done(err) // 不正なトークン
 
     const user = await User.findOne({token})
