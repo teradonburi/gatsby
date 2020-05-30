@@ -2,7 +2,7 @@ import React from 'react'
 import { navigate } from 'gatsby'
 import { RouteComponentProps } from '@reach/router'
 import { Form, Field } from 'react-final-form'
-import { ValidationErrors, SubmissionErrors } from 'final-form'
+import { ValidationErrors, SubmissionErrors, FORM_ERROR } from 'final-form'
 import { useSelector } from 'react-redux'
 import { useDispatchThunk } from '../hooks/useDispatchThunk'
 import { login } from '../../actions/user'
@@ -38,7 +38,9 @@ const LoginPage: React.FC<RouteComponentProps> = () => {
       email: values.email,
       password: values.password,
     }
-    dispatch(login(data))
+    return dispatch(login(data)).catch(() => {
+      return {[FORM_ERROR]: 'ログイン失敗'}
+    })
   }
 
   if (user) {
@@ -47,13 +49,14 @@ const LoginPage: React.FC<RouteComponentProps> = () => {
 
   return (
     <Form onSubmit={submit} validate={validate}>
-      {({handleSubmit}): JSX.Element =>
+      {({handleSubmit, submitError}): JSX.Element =>
         <form onSubmit={handleSubmit}>
           <Card>
             <CardContent>
               <Field name='email' type='email' component={TextInput} label='メールアドレス' />
               <Field name='password' type='password' component={TextInput} label='パスワード' />
             </CardContent>
+            {submitError && <div style={{color: 'red'}}>{submitError}</div>}
             <CardActions><Button type='submit' variant='contained' color='primary'>送信</Button></CardActions>
           </Card>
         </form>
