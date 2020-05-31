@@ -47,6 +47,7 @@ const TextInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
     InputLabelProps,
     FormHelperTextProps,
     SelectProps,
+    id,
     ref,
     // additional
     beforeLabel,
@@ -60,6 +61,7 @@ const TextInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
   const addtionalClasses = useAdditonalStyles()
 
   const props = {
+    id,
     fullWidth,
     margin,
     // input
