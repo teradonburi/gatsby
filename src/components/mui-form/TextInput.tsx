@@ -1,5 +1,4 @@
 import React from 'react'
-import clsx from 'clsx'
 import { TextField, InputAdornment, TextFieldProps } from '@material-ui/core'
 import { FieldRenderProps } from 'react-final-form'
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,12 +8,6 @@ interface AddtionalTextFieldProps {
   beforeLabel?: string;
   afterLabel?: string;
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginBottom: theme.spacing(3 / 2),
-  },
-}))
 
 const useAdditonalStyles = makeStyles(() => ({
   warn: {
@@ -57,7 +50,6 @@ const TextInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
   const showError = ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) && meta.touched
   const showWarn = meta.touched && meta.data && meta.data.warning
 
-  const baseClasses = useStyles()
   const addtionalClasses = useAdditonalStyles()
 
   const props = {
@@ -72,10 +64,8 @@ const TextInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
     onFocus: input.onFocus,
     onBlur: input.onBlur,
     // TextField props
-    classes: {
-      ...baseClasses,
-      root: clsx(baseClasses.root, classes.root, className),
-    },
+    classes,
+    className,
     label,
     autoFocus,
     disabled,

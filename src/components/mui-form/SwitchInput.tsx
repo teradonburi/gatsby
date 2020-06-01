@@ -6,12 +6,6 @@ import { orange } from '@material-ui/core/colors'
 import { FieldRenderProps } from 'react-final-form'
 
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginBottom: theme.spacing(3 / 2),
-  },
-}))
-
 const useAdditonalStyles = makeStyles(() => ({
   warn: {
     color: orange[500],
@@ -38,7 +32,6 @@ const SwitchInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
     ref,
   }: Partial<SwitchPropsEx> = rest
 
-  const baseClasses = useStyles()
   const addtionalClasses = useAdditonalStyles()
 
   const showError = ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) && meta.touched
@@ -51,8 +44,7 @@ const SwitchInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
           <Switch
             id={id}
             classes={{
-              ...baseClasses,
-              root: clsx(baseClasses.root, classes.root, className),
+              root: clsx(classes.root, className),
             }}
             size={size}
             name={input.name}

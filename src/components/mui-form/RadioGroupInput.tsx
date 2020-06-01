@@ -1,15 +1,8 @@
 import React from 'react'
-import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
-import { FormControl, FormHelperText, RadioGroup, RadioGroupProps, FormControlProps } from '@material-ui/core'
+import { FormControl, FormLabel, FormHelperText, RadioGroup, FormControlProps, FormLabelProps, RadioGroupProps } from '@material-ui/core'
 import { orange } from '@material-ui/core/colors'
 import { FieldRenderProps } from 'react-final-form'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginBottom: theme.spacing(3 / 2),
-  },
-}))
 
 const useAdditonalStyles = makeStyles(() => ({
   warn: {
@@ -18,7 +11,7 @@ const useAdditonalStyles = makeStyles(() => ({
 }))
 
 
-type RadioGroupPropsEx = RadioGroupProps & FormControlProps
+type RadioGroupPropsEx = RadioGroupProps & FormControlProps & FormLabelProps & {label: string}
 type RenderProps = FieldRenderProps<boolean, HTMLInputElement | HTMLLabelElement>
 
 const RadioGroupInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
@@ -26,12 +19,13 @@ const RadioGroupInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
  const {
     row,
     disabled,
+    required,
+    label,
     classes = {},
     className,
     children,
   }: Partial<RadioGroupPropsEx> = rest
 
-  const baseClasses = useStyles()
   const addtionalClasses = useAdditonalStyles()
 
   const showError = ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) && meta.touched
@@ -42,16 +36,17 @@ const RadioGroupInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
       component='fieldset'
       error={showError}
       disabled={disabled}
-      classes={{
-        ...baseClasses,
-        root: clsx(baseClasses.root, classes.root, className),
-      }}
+      required={required}
     >
+      <FormLabel component='legend'>{label}</FormLabel>
       <RadioGroup
         row={row}
         name={input.name}
         value={input.value}
-        onChange={input.onChange}>
+        onChange={input.onChange}
+        classes={classes}
+        className={className}
+      >
         {children}
       </RadioGroup>
       {showError ?

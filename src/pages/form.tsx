@@ -8,12 +8,14 @@ import { red } from '@material-ui/core/colors'
 import TextInput from '../components/mui-form/TextInput'
 import SwitchInput from '../components/mui-form/SwitchInput'
 import RadioGroupInput from '../components/mui-form/RadioGroupInput'
+import SliderInput from '../components/mui-form/SliderInput'
 
 type FormValues = {
   single?: string;
   multiple?: string;
   select?: string;
   radio?: string;
+  slider?: number;
 }
 
 const useStyles = makeStyles(() => ({
@@ -68,6 +70,7 @@ const TestForm: React.FC = (props) => {
             <FormControlLabel value='male' control={<Radio />} label="男性" />
             <FormControlLabel value='other' control={<Radio />} label="その他" />
           </Field>
+          <Field name='slider' label='スライダー' type='number' min={0} max={100} defaultValue={10} component={SliderInput} />
           <Button type='submit' variant='contained' color='primary'>送信</Button>
           {submitError && <div className={classes.error}>{submitError}</div>}
         </form>
