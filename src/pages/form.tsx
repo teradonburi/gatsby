@@ -8,6 +8,8 @@ import { red } from '@material-ui/core/colors'
 import TextInput from '../components/mui-form/TextInput'
 import SwitchInput from '../components/mui-form/SwitchInput'
 import RadioGroupInput from '../components/mui-form/RadioGroupInput'
+import CheckboxGroupInput from '../components/mui-form/CheckboxGroupInput'
+import CheckboxInput from '../components/mui-form/CheckboxInput'
 import SliderInput from '../components/mui-form/SliderInput'
 
 type FormValues = {
@@ -65,11 +67,15 @@ const TestForm: React.FC = (props) => {
             <MenuItem value='選択肢3'>選択肢３</MenuItem>
           </Field>
           <Field name='switch' label='スイッチ' type='checkbox' component={SwitchInput} />
-          <Field name='radio' label='ラジオ' type='radio' row component={RadioGroupInput} >
+          <Field name='radio' label='ラジオ' type='radio' component={RadioGroupInput} row required>
             <FormControlLabel value='female' control={<Radio />} label="女性" />
             <FormControlLabel value='male' control={<Radio />} label="男性" />
             <FormControlLabel value='other' control={<Radio />} label="その他" />
           </Field>
+          <CheckboxGroupInput label='チェックボックス' row required >
+            <Field name='check1' label='チェック１' type='checkbox' component={CheckboxInput} />
+            <Field name='check2' label='チェック２' type='checkbox' component={CheckboxInput} />
+          </CheckboxGroupInput>
           <Field name='slider' label='スライダー' type='number' min={0} max={100} defaultValue={10} component={SliderInput} />
           <Button type='submit' variant='contained' color='primary'>送信</Button>
           {submitError && <div className={classes.error}>{submitError}</div>}

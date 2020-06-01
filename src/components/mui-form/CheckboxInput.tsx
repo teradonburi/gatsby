@@ -1,9 +1,8 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { FormControl, FormControlLabel, FormHelperText, Switch, SwitchProps, FormControlLabelProps } from '@material-ui/core'
+import { FormControlLabel, Checkbox, FormHelperText, FormControlLabelProps, CheckboxProps } from '@material-ui/core'
 import { orange } from '@material-ui/core/colors'
 import { FieldRenderProps } from 'react-final-form'
-
 
 const useAdditonalStyles = makeStyles(() => ({
   warn: {
@@ -11,25 +10,18 @@ const useAdditonalStyles = makeStyles(() => ({
   },
 }))
 
-type SwitchPropsEx = SwitchProps & FormControlLabelProps
+type CheckboxGroupPropsEx = FormControlLabelProps & CheckboxProps
 type RenderProps = FieldRenderProps<boolean, HTMLInputElement | HTMLLabelElement>
 
-const SwitchInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
-  const {
-    id,
-    label,
-    size,
+const CheckboxInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
+
+ const {
     disabled,
-    disableRipple,
-    edge,
-    color,
-    required,
-    inputProps,
+    label,
     labelPlacement,
     classes = {},
     className,
-    ref,
-  }: Partial<SwitchPropsEx> = rest
+  }: Partial<CheckboxGroupPropsEx> = rest
 
   const addtionalClasses = useAdditonalStyles()
 
@@ -37,28 +29,19 @@ const SwitchInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
   const showWarn = meta.touched && meta.data && meta.data.warning
 
   return (
-    <FormControl error={showError}>
+    <div>
       <FormControlLabel
         control={
-          <Switch
-            id={id}
-            classes={classes}
-            className={className}
-            size={size}
+          <Checkbox
             name={input.name}
-            checked={input.checked}
             value={input.value}
             onChange={input.onChange}
-            edge={edge}
-            color={color}
-            required={required}
-            disableRipple={disableRipple}
-            inputProps={inputProps}
-            inputRef={ref}
+            disabled={disabled}
+            classes={classes}
+            className={className}
           />
         }
         labelPlacement={labelPlacement}
-        disabled={disabled}
         label={label}
       />
       {showError ?
@@ -66,8 +49,8 @@ const SwitchInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
       : showWarn ?
         <FormHelperText className={addtionalClasses.warn}>{meta.data?.warning}</FormHelperText>
       : null}
-    </FormControl>
+    </div>
   )
 }
 
-export default SwitchInput
+export default CheckboxInput

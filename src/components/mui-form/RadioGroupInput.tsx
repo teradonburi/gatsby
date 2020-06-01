@@ -10,9 +10,8 @@ const useAdditonalStyles = makeStyles(() => ({
   },
 }))
 
-
 type RadioGroupPropsEx = RadioGroupProps & FormControlProps & FormLabelProps & {label: string}
-type RenderProps = FieldRenderProps<boolean, HTMLInputElement | HTMLLabelElement>
+type RenderProps = FieldRenderProps<string, HTMLInputElement | HTMLLabelElement>
 
 const RadioGroupInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
 
