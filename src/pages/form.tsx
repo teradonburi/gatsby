@@ -72,7 +72,7 @@ const TestForm: React.FC = (props) => {
             <FormControlLabel value='male' control={<Radio />} label="男性" />
             <FormControlLabel value='other' control={<Radio />} label="その他" />
           </Field>
-          <CheckboxGroupInput label='チェックボックス' row required >
+          <CheckboxGroupInput label='チェックボックス' row >
             <Field name='check1' label='チェック１' type='checkbox' component={CheckboxInput} />
             <Field name='check2' label='チェック２' type='checkbox' component={CheckboxInput} />
           </CheckboxGroupInput>

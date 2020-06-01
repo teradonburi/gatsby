@@ -18,7 +18,6 @@ const RadioGroupInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
  const {
     row,
     disabled,
-    required,
     label,
     classes = {},
     className,
@@ -35,7 +34,6 @@ const RadioGroupInput = ({input, meta, ...rest}: RenderProps): JSX.Element => {
       component='fieldset'
       error={showError}
       disabled={disabled}
-      required={required}
     >
       <FormLabel component='legend'>{label}</FormLabel>
       <RadioGroup
