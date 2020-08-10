@@ -2,7 +2,7 @@ import { Link } from 'gatsby'
 import React from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Image from '../components/Image'
+import Image from './Image'
 import { Maybe } from '../../types/graphql-types'
 
 const Header: React.FC<{siteTitle?: Maybe<string>}> = ({ siteTitle }) => (

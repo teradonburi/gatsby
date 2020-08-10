@@ -51,6 +51,12 @@ module.exports = {
       options: {
         fileName: 'types/graphql-types.d.ts',
       },
+      documentPaths: [
+        './src/components/Image.tsx',
+        './src/components/Header.tsx',
+        './src/components/Layout.tsx',
+        './node_modules/gatsby-transformer-sharp/**/*.js'
+      ],
     },
     {
       resolve: 'gatsby-plugin-eslint',
