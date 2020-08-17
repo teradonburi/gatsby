@@ -1,11 +1,7 @@
-# My Qiita posts
 [![My Qiita followers](https://qiita-badge.apiapi.app/s/teradonburi/posts.svg)](http://qiita.com/teradonburi)
-# My Qiita contributions
 [![My Qiita contributions](https://qiita-badge.apiapi.app/s/teradonburi/contributions.svg)](http://qiita.com/teradonburi)
-# My Qiita followers
 [![My Qiita followers](https://qiita-badge.apiapi.app/s/teradonburi/followers.svg)](http://qiita.com/teradonburi)
-                
-                
+
 
 # Gatsby Full Template(with TypeScript & ESLint)
 
