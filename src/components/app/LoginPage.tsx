@@ -3,8 +3,7 @@ import { navigate } from 'gatsby'
 import { RouteComponentProps } from '@reach/router'
 import { Form, Field } from 'react-final-form'
 import { ValidationErrors, SubmissionErrors, FORM_ERROR } from 'final-form'
-import { useSelector } from 'react-redux'
-import { useDispatchThunk } from '../hooks/useDispatchThunk'
+import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../actions/user'
 import {
   Card,
@@ -20,7 +19,7 @@ type FormValues = Pick<model.User, 'email' | 'password'>
 
 const LoginPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)
-  const dispatch = useDispatchThunk()
+  const dispatch = useDispatch()
 
   const validate = (values: FormValues): ValidationErrors => {
     const errors: Partial<FormValues> = {}

@@ -1,7 +1,6 @@
 import React from 'react'
 import { RouteComponentProps } from '@reach/router'
-import { useSelector } from 'react-redux'
-import { useDispatchThunk } from '../hooks/useDispatchThunk'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import { load, update, logout } from '../../actions/user'
 import { sendSubscription } from '../../actions/webpush'
@@ -11,7 +10,7 @@ import { redux } from 'interface'
 
 const UserPage: React.FC<RouteComponentProps> = () => {
   const user = useSelector((state: {user: redux.User}) => state.user.user)
-  const dispatch = useDispatchThunk()
+  const dispatch = useDispatch()
 
   React.useEffect(() => {
     connect().then(() => {
